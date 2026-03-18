@@ -1,0 +1,38 @@
+[
+{
+  "name": "event_mass",
+  "variable": "Event_mass",
+  "axtitle": "Invariant mass of dijet-system",
+  "unit": "GeV",
+  "xlow": 60,
+  "xhigh": 115,
+  "nbins": 55
+},
+{
+  "name": "event_mass_coarse",
+  "variable": "Event_mass",
+  "axtitle": "Invariant mass of dijet-system",
+  "unit": "GeV",
+  "xlow": 60,
+  "xhigh": 110,
+  "nbins": 25
+},
+{
+  "name": "event_njets",
+  "variable": "Event_njets",
+  "axtitle": "Number of jets per event (before jet selection)",
+  "unit": "",
+  "bins": [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5],
+  "iscategorical": "true",
+  "xlabels": ["0", "1", "2", "3", "4"]
+},
+{
+  "name": "event_nselectedjets",
+  "variable": "ak.num(Jets_pt)",
+  "axtitle": "Number of selected jets per event",
+  "unit": "",
+  "bins": [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5],
+  "iscategorical": "true",
+  "xlabels": ["0", "1", "2", "3", "4"]
+}
+]

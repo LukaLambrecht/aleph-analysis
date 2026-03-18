@@ -1,0 +1,7 @@
+{
+  "selection": [
+    "V0Candidates_mass > 1.05",
+    "V0Candidates_mass < 1.2"
+  ],
+  "application": ["V0Candidates_*"]
+}

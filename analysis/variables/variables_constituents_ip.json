@@ -1,0 +1,65 @@
+[
+{
+  "name": "jet_constituents_dxy",
+  "variable": "JetsConstituents_dxy[:,:,:1]",
+  "axtitle": "Jet leading constituent dxy",
+  "unit": "cm",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_dz",
+  "variable": "JetsConstituents_dz[:,:,:1]",
+  "axtitle": "Jet leading constituent dz",
+  "unit": "cm",
+  "xlow": -3,
+  "xhigh": 3,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_d0",
+  "variable": "JetsConstituents_d0_wrt0[:,:,:1]",
+  "axtitle": "Jet leading constituent d0",
+  "unit": "cm",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_z0",
+  "variable": "JetsConstituents_z0_wrt0[:,:,:1]",
+  "axtitle": "Jet leading constituent z0",
+  "unit": "cm",
+  "xlow": -3,
+  "xhigh": 3,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_Sip2dSig",
+  "variable": "JetsConstituents_Sip2dSig[:,:,:1]",
+  "axtitle": "Jet leading constituent signed 2D IP significance",
+  "unit": "",
+  "xlow": -15,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_Sip3dSig",
+  "variable": "JetsConstituents_Sip3dSig[:,:,:1]",
+  "axtitle": "Jet leading constituent signed 3D IP significance",
+  "unit": "",
+  "xlow": -15,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_linearSignedIP3DSig",
+  "variable": "JetsConstituents_linearSignedIP3DSig[:,:,:1]",
+  "axtitle": "Jet leading constituent ALEPH-style IP significance",
+  "unit": "",
+  "xlow": -5,
+  "xhigh": 5,
+  "nbins": 50
+}
+]

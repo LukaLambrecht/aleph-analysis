@@ -1,0 +1,29 @@
+[
+{
+  "name": "score_isB",
+  "variable": "ak.prod(Jets_score_isB, axis=1)",
+  "axtitle": "Event classifier bb score",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 100
+},
+{
+  "name": "score_isC",
+  "variable": "ak.prod(Jets_score_isC, axis=1)",
+  "axtitle": "Event classifier cc score",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 100
+},
+{
+  "name": "score_isS",
+  "variable": "ak.prod(Jets_score_isS, axis=1)",
+  "axtitle": "Event classifier ss score",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 100
+}
+]

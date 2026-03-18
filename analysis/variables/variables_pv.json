@@ -1,0 +1,29 @@
+[
+{
+  "name": "PV_x",
+  "variable": "PV_x",
+  "axtitle": "Primary vertex x-coordinate",
+  "unit": "cm",
+  "xlow": -0.2,
+  "xhigh": 0.2,
+  "nbins": 50
+},
+{ 
+  "name": "PV_y",
+  "variable": "PV_y",
+  "axtitle": "Primary vertex y-coordinate",
+  "unit": "cm",
+  "xlow": -0.2,
+  "xhigh": 0.2,
+  "nbins": 50
+},
+{
+  "name": "PV_z",
+  "variable": "PV_z",
+  "axtitle": "Primary vertex z-coordinate",
+  "unit": "cm",
+  "xlow": -2,
+  "xhigh": 2,
+  "nbins": 50
+}
+]

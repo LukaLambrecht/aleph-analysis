@@ -1,0 +1,29 @@
+[
+{
+  "name": "Sip2dSig",
+  "variable": "pfcand_Sip2dSig",
+  "axtitle": "SIP2D significance (FCC style)",
+  "unit": "",
+  "xlow": -10,
+  "xhigh": 10,
+  "nbins": 100
+},
+{
+  "name": "Sip3dSig",
+  "variable": "pfcand_Sip3dSig",
+  "axtitle": "SIP3D significance (FCC style)",
+  "unit": "",
+  "xlow": -10,
+  "xhigh": 10,
+  "nbins": 100
+},
+{
+  "name": "linearSignedIP3DSig",
+  "variable": "pfcand_linearSignedIP3DSig",
+  "axtitle": "SIP3D significance (ALEPH style)",
+  "unit": "",
+  "xlow": -10,
+  "xhigh": 10,
+  "nbins": 100
+}
+]

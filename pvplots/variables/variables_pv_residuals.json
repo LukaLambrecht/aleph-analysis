@@ -1,0 +1,29 @@
+[
+{
+  "name": "PV_x_residual",
+  "variable": "PV_x - GenPV_x",
+  "axtitle": "Primary vertex x-coordinate residual",
+  "unit": "cm",
+  "xlow": -0.03,
+  "xhigh": 0.03,
+  "nbins": 50
+},
+{ 
+  "name": "PV_y_residual",
+  "variable": "PV_y - GenPV_y",
+  "axtitle": "Primary vertex y-coordinate residual",
+  "unit": "cm",
+  "xlow": -0.03,
+  "xhigh": 0.03,
+  "nbins": 50
+},
+{
+  "name": "PV_z_residual",
+  "variable": "PV_z - GenPV_z",
+  "axtitle": "Primary vertex z-coordinate residual",
+  "unit": "cm",
+  "xlow": -0.03,
+  "xhigh": 0.03,
+  "nbins": 50
+}
+]

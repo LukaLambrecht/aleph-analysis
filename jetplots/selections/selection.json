@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "np.divide(recojet_pt, np.abs(np.sin(recojet_theta))) > 10",
+    "np.abs(np.cos(recojet_theta)) < 0.65"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "selection": [
+    "Jets_pt > 10",
+    "(Jets_eta > -0.9) & (Jets_eta < 0.9)"
+  ],
+  "application": ["Jets_*", "JetsConstituents_*"]
+}

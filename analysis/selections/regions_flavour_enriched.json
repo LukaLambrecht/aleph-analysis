@@ -1,0 +1,15 @@
+{
+  "bb-enriched": [
+    "ak.prod(Jets_score_isB, axis=1) > 0.6"
+  ],
+  "cc-enriched": [
+    "ak.prod(Jets_score_isC, axis=1) > 0.5"
+  ],
+  "ss-enriched": [
+    "ak.prod(Jets_score_isS, axis=1) > 0.3"
+  ],
+  "anti-hf-enriched": [
+    "ak.prod(Jets_score_isB, axis=1) < 0.02",
+    "ak.prod(Jets_score_isC, axis=1) < 0.05"
+  ]
+}

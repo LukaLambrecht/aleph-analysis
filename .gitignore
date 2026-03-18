@@ -1,0 +1,17 @@
+# custom condor and slurm log files
+**cjob_*
+**sjob_*
+
+# condor artifact that for some reason puts <username>.cc in the working directory
+**.cc
+
+# custom output folders
+**output_*
+
+# compiled and cashed python code
+**__pycache__
+**.pyc
+
+# data files and output files
+**.root
+**.png

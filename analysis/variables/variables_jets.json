@@ -1,0 +1,92 @@
+[
+{
+  "name": "jet_energy",
+  "variable": "Jets_e",
+  "axtitle": "Jet energy",
+  "unit": "GeV",
+  "xlow": 20,
+  "xhigh": 70,
+  "nbins": 50
+},
+{
+  "name": "jet_mass",
+  "variable": "Jets_mass",
+  "axtitle": "Jet mass",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 40,
+  "nbins": 40
+},
+{
+  "name": "jet_pt",
+  "variable": "Jets_pt",
+  "axtitle": "Jet transverse momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 60,
+  "nbins": 60
+},
+{
+  "name": "jet_nconstituents",
+  "variable": "Jets_nConstituents",
+  "axtitle": "Jet number of constituents",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 50.5,
+  "nbins": 51
+},
+{
+  "name": "jet_nphoton",
+  "variable": "Jets_nPhoton",
+  "axtitle": "Jet number of photons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 20.5,
+  "nbins": 21
+},
+{
+  "name": "jet_nchargedhad",
+  "variable": "Jets_nChargedHad",
+  "axtitle": "Jet number of charged hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 25.5,
+  "nbins": 26
+},
+{
+  "name": "jet_nneutralhad",
+  "variable": "Jets_nNeutralHad",
+  "axtitle": "Jet number of neutral hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 15.5,
+  "nbins": 16
+},
+{
+  "name": "jet_nel",
+  "variable": "Jets_nEl",
+  "axtitle": "Jet number of electrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 4.5,
+  "nbins": 5
+},
+{
+  "name": "jet_nmu",
+  "variable": "Jets_nMu",
+  "axtitle": "Jet number of muons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.5,
+  "nbins": 4
+},
+{
+  "name": "jet_nsv",
+  "variable": "Jets_nSV",
+  "axtitle": "Number of secondary vertices per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 5.5,
+  "nbins": 6
+}
+]

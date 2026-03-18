@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "V0Candidates_cosPointing > 0.999"
+  ],
+  "application": ["V0Candidates_*"]
+}

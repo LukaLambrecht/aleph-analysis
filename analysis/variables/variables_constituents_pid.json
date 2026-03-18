@@ -1,0 +1,74 @@
+[
+{
+  "name": "jet_constituents_pid_pval_wires_pi",
+  "variable": "JetsConstituents_PID_pval_wires_pi",
+  "axtitle": "Jet constituent pion p-value (wires)",
+  "unit": "",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_pval_wires_pi_abs",
+  "variable": "np.abs(JetsConstituents_PID_pval_wires_pi)",
+  "axtitle": "Jet constituent pion p-value (wires)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+},
+{ 
+  "name": "jet_constituents_pid_pval_wires_kaon",
+  "variable": "JetsConstituents_PID_pval_wires_kaon",
+  "axtitle": "Jet constituent kaon p-value (wires)",
+  "unit": "",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_pval_wires_kaon_abs",
+  "variable": "np.abs(JetsConstituents_PID_pval_wires_kaon)",
+  "axtitle": "Jet constituent kaon p-value (wires)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_pval_wires_ele",
+  "variable": "JetsConstituents_PID_pval_wires_ele",
+  "axtitle": "Jet constituent electron p-value (wires)",
+  "unit": "",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_pval_wires_mu",
+  "variable": "JetsConstituents_PID_pval_wires_mu",
+  "axtitle": "Jet constituent muon p-value (wires)",
+  "unit": "",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_pval_wires_proton",
+  "variable": "JetsConstituents_PID_pval_wires_proton",
+  "axtitle": "Jet constituent proton p-value (wires)",
+  "unit": "",
+  "xlow": -1,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pid_wires_kaon_vs_pion",
+  "variable": "np.abs(JetsConstituents_PID_pval_wires_kaon) > np.abs(JetsConstituents_PID_pval_wires_pi)",
+  "axtitle": "Jet constituent kaon $|p-value|$ $>$ pion $|p-value|$ (wires)",
+  "unit": "",
+  "xlow": -1.5,
+  "xhigh": 2.5,
+  "nbins": 4
+}
+]

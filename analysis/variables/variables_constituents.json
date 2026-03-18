@@ -1,0 +1,38 @@
+[
+{
+  "name": "jet_constituents_energy",
+  "variable": "JetsConstituents_e",
+  "axtitle": "Jet constituent energy",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 10,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_pt",
+  "variable": "JetsConstituents_pt",
+  "axtitle": "Jet constituent transverse momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 10,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_erel",
+  "variable": "JetsConstituents_erel",
+  "axtitle": "Jet constituent relative energy (wrt jet)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 0.4,
+  "nbins": 50
+},
+{
+  "name": "jet_constituents_thetarel",
+  "variable": "JetsConstituents_thetarel",
+  "axtitle": "Jet constituent relative angle (wrt jet)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 2,
+  "nbins": 50
+}
+]

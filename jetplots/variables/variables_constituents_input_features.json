@@ -1,0 +1,56 @@
+[
+{ 
+  "name": "pfcand_pt",
+  "variable": "pfcand_pt",
+  "axtitle": "Transverse momentum ($p_T$)",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 20,
+  "nbins": 50
+},
+{
+  "name": "pfcand_e",
+  "variable": "pfcand_e",
+  "axtitle": "Energy ($E$)",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 20,
+  "nbins": 50
+},
+{
+  "name": "pfcand_ptrel",
+  "variable": "pfcand_ptrel",
+  "axtitle": "Relative transverse momentum ($p_{T, rel}$)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "pfcand_erel",
+  "variable": "pfcand_erel",
+  "axtitle": "Relative energy ($E_{rel}$)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "pfcand_thetarel",
+  "variable": "pfcand_thetarel",
+  "axtitle": "Relative angle ($\\theta_{rel}$)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+},
+{
+  "name": "pfcand_phirel",
+  "variable": "pfcand_phirel",
+  "axtitle": "Relative azimuth ($\\phi_{rel}$)",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 1,
+  "nbins": 50
+}
+]

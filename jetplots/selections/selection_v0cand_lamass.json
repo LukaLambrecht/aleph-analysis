@@ -1,0 +1,7 @@
+{
+  "selection": [
+    "v0cand_mass > 1.05",
+    "v0cand_mass < 1.2"
+  ],
+  "application": ["v0cand_*"]
+}

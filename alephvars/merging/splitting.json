@@ -1,0 +1,7 @@
+{
+  "qqb": {
+    "light": "(recojet_flavour>=1) & (recojet_flavour<=3)",
+    "cc": "(recojet_flavour==4)",
+    "bb": "(recojet_flavour==5)"
+  }
+}

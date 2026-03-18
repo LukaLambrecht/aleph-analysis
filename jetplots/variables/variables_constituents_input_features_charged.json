@@ -1,0 +1,101 @@
+[
+{
+  "name": "pfcand_dxy",
+  "variable": "pfcand_dxy",
+  "axtitle": "Transverse impact parameter ($d_{xy}$)",
+  "unit": "cm",
+  "xlow": -0.75,
+  "xhigh": 0.75,
+  "nbins": 100
+},
+{
+  "name": "pfcand_dz",
+  "variable": "pfcand_dz",
+  "axtitle": "Longitudinal impact parameter ($d_z$)",
+  "unit": "cm",
+  "xlow": -1.5,
+  "xhigh": 1.5,
+  "nbins": 100
+},
+{
+  "name": "pfcand_Sip2dSig",
+  "variable": "pfcand_Sip2dSig",
+  "axtitle": "Signed 2D impact parameter significance ($\\sigma(SIP2D)$)",
+  "unit": "",
+  "xlow": -15,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "pfcand_Sip3dSig",
+  "variable": "pfcand_Sip3dSig",
+  "axtitle": "Signed 3D impact parameter significance ($\\sigma(SIP3D)$)",
+  "unit": "",
+  "xlow": -15,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "pfcand_linearSignedIP3DSig",
+  "variable": "pfcand_linearSignedIP3DSig",
+  "axtitle": "Impact parameter significance ($\\sigma(D)$)",
+  "unit": "",
+  "xlow": -15,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "pfcand_transverseJetDistance",
+  "variable": "pfcand_transverseJetDistance",
+  "axtitle": "Transverse jet distance ($D_{jet, trans}$)",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 5,
+  "nbins": 50
+},
+{
+  "name": "pfcand_longitudinalJetDistance",
+  "variable": "pfcand_longitudinalJetDistance",
+  "axtitle": "Longitudinal jet distance ($D_{jet, long}$)",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 5,
+  "nbins": 50
+},
+{
+  "name": "pfcand_trackChi2Normalized",
+  "variable": "pfcand_trackChi2Normalized",
+  "axtitle": "Normalized $\\chi^2$ of track fit",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 3,
+  "nbins": 50
+},
+{
+  "name": "pfcand_nTrackHits_VDET",
+  "variable": "pfcand_nTrackHits_VDET",
+  "axtitle": "Number of track hits in VDET",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.3,
+  "nbins": 4
+},
+{
+  "name": "pfcand_nTrackHits_ITC",
+  "variable": "pfcand_nTrackHits_ITC",
+  "axtitle": "Number of track hits in ITC",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 20.5,
+  "nbins": 21
+},
+{
+  "name": "pfcand_nTrackHits_TPC",
+  "variable": "pfcand_nTrackHits_TPC",
+  "axtitle": "Number of track hits in TPC",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 50.5,
+  "nbins": 51
+}
+]

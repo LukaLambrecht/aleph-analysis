@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "v0cand_cosPointing > 0.999"
+  ],
+  "application": ["v0cand_*"]
+}

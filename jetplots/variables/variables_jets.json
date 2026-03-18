@@ -1,0 +1,92 @@
+[
+{
+  "name": "recojet_energy",
+  "variable": "recojet_e",
+  "axtitle": "Jet energy ($E$)",
+  "unit": "GeV",
+  "xlow": 10,
+  "xhigh": 70,
+  "nbins": 60
+},
+{
+  "name": "recojet_mass",
+  "variable": "recojet_mass",
+  "axtitle": "Jet mass ($m$)",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 60,
+  "nbins": 60
+},
+{
+  "name": "recojet_pt",
+  "variable": "recojet_pt",
+  "axtitle": "Jet transverse momentum ($p_T$)",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 60,
+  "nbins": 60
+},
+{
+  "name": "recojet_nconst",
+  "variable": "nconst",
+  "axtitle": "Number of constituents per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 50.5,
+  "nbins": 51
+},
+{
+  "name": "recojet_nphoton",
+  "variable": "nphotons",
+  "axtitle": "Number of photons per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 20.5,
+  "nbins": 21
+},
+{
+  "name": "recojet_nchargedhad",
+  "variable": "nchargedhad",
+  "axtitle": "Number of charged hadrons per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 25.5,
+  "nbins": 26
+},
+{
+  "name": "recojet_nneutralhad",
+  "variable": "nneutralhad",
+  "axtitle": "Number of neutral hadrons per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 15.5,
+  "nbins": 16
+},
+{
+  "name": "recojet_nel",
+  "variable": "nel",
+  "axtitle": "Number of electrons per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 4.5,
+  "nbins": 5
+},
+{
+  "name": "recojet_nmu",
+  "variable": "nmu",
+  "axtitle": "Number of muons per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.5,
+  "nbins": 4
+},
+{
+  "name": "recojet_nsv",
+  "variable": "recojet_nsv",
+  "axtitle": "Number of secondary vertices per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 5.5,
+  "nbins": 6
+}
+]

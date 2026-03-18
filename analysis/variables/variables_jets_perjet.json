@@ -1,0 +1,164 @@
+[
+{
+  "name": "jet_0_energy",
+  "variable": "Jets_e[:,0]",
+  "axtitle": "First jet energy",
+  "unit": "GeV",
+  "xlow": 10,
+  "xhigh": 70,
+  "nbins": 60
+},
+{
+  "name": "jet_1_energy",
+  "variable": "Jets_e[:,1]",
+  "axtitle": "Second jet energy",
+  "unit": "GeV",
+  "xlow": 10,
+  "xhigh": 70,
+  "nbins": 60
+},
+{
+  "name": "jet_0_mass",
+  "variable": "Jets_mass[:,0]",
+  "axtitle": "First jet mass",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 40,
+  "nbins": 40
+},
+{
+  "name": "jet_1_mass",
+  "variable": "Jets_mass[:,1]",
+  "axtitle": "Second jet mass",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 40,
+  "nbins": 40
+},
+{
+  "name": "jet_0_pt",
+  "variable": "Jets_pt[:,0]",
+  "axtitle": "First jet transverse momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 60,
+  "nbins": 60
+},
+{
+  "name": "jet_1_pt",
+  "variable": "Jets_pt[:,1]",
+  "axtitle": "Second jet transverse momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 60,
+  "nbins": 60
+},
+{
+  "name": "jet_0_nconstituents",
+  "variable": "Jets_nConstituents[:,0]",
+  "axtitle": "First jet number of constituents",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 50.5,
+  "nbins": 51
+},
+{
+  "name": "jet_1_nconstituents",
+  "variable": "Jets_nConstituents[:,1]",
+  "axtitle": "Second jet number of constituents",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 50.5,
+  "nbins": 51
+},
+{
+  "name": "jet_0_nphoton",
+  "variable": "Jets_nPhoton[:,0]",
+  "axtitle": "First jet number of photons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 20.5,
+  "nbins": 21
+},
+{
+  "name": "jet_1_nphoton",
+  "variable": "Jets_nPhoton[:,1]",
+  "axtitle": "Second jet number of photons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 20.5,
+  "nbins": 21
+},
+{
+  "name": "jet_0_nchargedhad",
+  "variable": "Jets_nChargedHad[:,0]",
+  "axtitle": "First jet number of charged hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 25.5,
+  "nbins": 26
+},
+{
+  "name": "jet_1_nchargedhad",
+  "variable": "Jets_nChargedHad[:,1]",
+  "axtitle": "Second jet number of charged hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 25.5,
+  "nbins": 26
+},
+{
+  "name": "jet_0_nneutralhad",
+  "variable": "Jets_nNeutralHad[:,0]",
+  "axtitle": "First jet number of neutral hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 15.5,
+  "nbins": 16
+},
+{
+  "name": "jet_1_nneutralhad",
+  "variable": "Jets_nNeutralHad[:,1]",
+  "axtitle": "Second jet number of neutral hadrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 15.5,
+  "nbins": 16
+},
+{
+  "name": "jet_0_nel",
+  "variable": "Jets_nEl[:,0]",
+  "axtitle": "First jet number of electrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 4.5,
+  "nbins": 5
+},
+{
+  "name": "jet_1_nel",
+  "variable": "Jets_nEl[:,1]",
+  "axtitle": "Second jet number of electrons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 4.5,
+  "nbins": 5
+},
+{
+  "name": "jet_0_nmu",
+  "variable": "Jets_nMu[:,0]",
+  "axtitle": "First jet number of muons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.5,
+  "nbins": 4
+},
+{
+  "name": "jet_1_nmu",
+  "variable": "Jets_nMu[:,1]",
+  "axtitle": "Second jet number of muons",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.5,
+  "nbins": 4
+}
+]

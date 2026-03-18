@@ -1,0 +1,56 @@
+[
+{
+  "name": "V0Candidates_mass",
+  "variable": "V0Candidates_mass",
+  "axtitle": "$K^0_S$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.5,
+  "nbins": 100
+},
+{
+  "name": "V0Candidates_correctedMass",
+  "variable": "V0Candidates_correctedMass",
+  "axtitle": "$K^0_S$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.4,
+  "nbins": 100
+},
+{
+  "name": "V0Candidates_dxy",
+  "variable": "V0Candidates_dxy",
+  "axtitle": "$K^0_S$ candidate transverse displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 75,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_dxyz",
+  "variable": "V0Candidates_dxyz",
+  "axtitle": "$K^0_S$ candidate displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 150,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_p",
+  "variable": "V0Candidates_p",
+  "axtitle": "$K^0_S$ candidate momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_prel",
+  "variable": "V0Candidates_prel",
+  "axtitle": "$K^0_S$ candidate relative momentum",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 0.5,
+  "nbins": 50
+}
+]

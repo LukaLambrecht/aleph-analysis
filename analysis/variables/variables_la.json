@@ -1,0 +1,56 @@
+[
+{
+  "name": "V0Candidates_mass",
+  "variable": "V0Candidates_mass",
+  "axtitle": "$\\Lambda^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.5,
+  "nbins": 100
+},
+{
+  "name": "V0Candidates_correctedMass",
+  "variable": "V0Candidates_correctedMass",
+  "axtitle": "$\\Lambda^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.4,
+  "nbins": 100
+},
+{
+  "name": "V0Candidates_dxy",
+  "variable": "V0Candidates_dxy",
+  "axtitle": "$\\Lambda^0$ candidate transverse displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 75,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_dxyz",
+  "variable": "V0Candidates_dxyz",
+  "axtitle": "$\\Lambda^0$ candidate displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 150,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_p",
+  "variable": "V0Candidates_p",
+  "axtitle": "$\\Lambda^0$ candidate momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "V0Candidates_prel",
+  "variable": "V0Candidates_prel",
+  "axtitle": "$\\Lambda^0$ candidate relative momentum",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 0.5,
+  "nbins": 50
+}
+]

@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "V0Candidates_chi2Normalized < 1"
+  ],
+  "application": ["V0Candidates_*"]
+}

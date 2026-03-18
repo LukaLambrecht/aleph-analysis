@@ -1,0 +1,9 @@
+{
+  "selection": [
+    "np.abs(JetsConstituents_charge) > 0",
+    "np.sqrt(np.square(JetsConstituents_pt) + np.square(JetsConstituents_pz)) > 1",
+    "JetsConstituents_dEdx_wires_value > 0.8",
+    "JetsConstituents_isChargedHad"
+  ],
+  "application": ["JetsConstituents_*"]
+}

@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "recojet_pt > 10",
+    "(recojet_eta > -0.9) & (recojet_eta < 0.9)"
+  ]
+}

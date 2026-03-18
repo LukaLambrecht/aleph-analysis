@@ -1,0 +1,90 @@
+# Do model evaluation for jet flavour tagging
+
+import os
+import sys
+import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+
+thisdir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(thisdir)
+
+from tools import read_file
+from plot_roc_multi import plot_roc_multi
+
+#global pyplot settings
+plt.rc("text", usetex=True)
+plt.rc("font", family="serif")
+
+
+if __name__=='__main__':
+
+    # read command line args
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--inputfiles', required=True, nargs='+')
+    args = parser.parse_args()
+
+    # hard coded settings
+    treename = 'Events'
+    signal_categories = {
+        'b': {
+            'label_branch': 'recojet_isB',
+            'score_branch': 'score_recojet_isB',
+            'color': 'red',
+            'label': r'$b$-jets'
+        },
+        'c': {
+            'label_branch': 'recojet_isC',
+            'score_branch': 'score_recojet_isC',
+            'color': 'purple',
+            'label': r'$c$-jets'
+        },
+    }
+    background_categories = {
+        'uds': {
+            'label_branch': 'recojet_isUDG | recojet_isS',
+            'score_branch': None,
+            'color': 'green',
+            'label': r'$uds$-jets'
+        }
+    }
+    all_categories = {**signal_categories, **background_categories}
+
+    # find all branches to read
+    branches_to_read = ([
+        'recojet_isB',
+        'recojet_isC',
+        'recojet_isS',
+        'recojet_isUDG',
+        'score_recojet_isB',
+        'score_recojet_isC'
+    ])
+
+    # loop over input files
+    for inputfile in args.inputfiles:
+        print(f'Running on input file {inputfile}...')
+
+        # load events
+        events = read_file(
+                   inputfile,
+                   treename = treename,
+                   branches = branches_to_read)
+        keys = list(events.keys())
+        nevents = len(events[list(events.keys())[0]])
+        print('Read events file with following properties:')
+        print(f'  - Keys: {keys}.')
+        print(f'  - Number of events: {nevents}.')
+
+        # define output directory
+        outputdir = inputfile.replace('.root', '_plots')
+
+        # plot the score distributions and ROC curves
+        print(f'    Plotting ROC...')
+        plot_roc_multi(
+            events,
+            signal_categories,
+            background_categories,
+            outputdir = outputdir,
+            doRb = True,
+            do_bootstrap = True)
+        plt.close()

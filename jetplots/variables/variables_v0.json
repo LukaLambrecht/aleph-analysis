@@ -1,0 +1,56 @@
+[
+{
+  "name": "v0cand_mass",
+  "variable": "v0cand_mass",
+  "axtitle": "$V^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.5,
+  "nbins": 100
+},
+{
+  "name": "v0cand_correctedMass",
+  "variable": "v0cand_correctedMass",
+  "axtitle": "$V^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.4,
+  "nbins": 100
+},
+{
+  "name": "v0cand_dxy",
+  "variable": "v0cand_dxy",
+  "axtitle": "$V^0$ candidate transverse displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 75,
+  "nbins": 50
+},
+{
+  "name": "v0cand_dxyz",
+  "variable": "v0cand_dxyz",
+  "axtitle": "$V^0$ candidate displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 150,
+  "nbins": 50
+},
+{
+  "name": "v0cand_p",
+  "variable": "v0cand_p",
+  "axtitle": "$V^0$ candidate momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "v0cand_prel",
+  "variable": "v0cand_prel",
+  "axtitle": "$V^0$ candidate relative momentum",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 0.5,
+  "nbins": 50
+}
+]

@@ -1,0 +1,65 @@
+[
+{
+  "name": "nlacand",
+  "variable": "ak.num(v0cand_mass)",
+  "axtitle": "Number of $\\Lambda^0$ candidates per jet",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 3.5,
+  "nbins": 4
+},
+{
+  "name": "v0cand_mass",
+  "variable": "v0cand_mass",
+  "axtitle": "$\\Lambda^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.5,
+  "nbins": 100
+},
+{
+  "name": "v0cand_correctedMass",
+  "variable": "v0cand_correctedMass",
+  "axtitle": "$\\Lambda^0$ candidate mass",
+  "unit": "GeV",
+  "xlow": 0.2,
+  "xhigh": 1.4,
+  "nbins": 100
+},
+{
+  "name": "v0cand_dxy",
+  "variable": "v0cand_dxy",
+  "axtitle": "$\\Lambda^0$ candidate transverse displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 75,
+  "nbins": 50
+},
+{
+  "name": "v0cand_dxyz",
+  "variable": "v0cand_dxyz",
+  "axtitle": "$\\Lambda^0$ candidate displacement",
+  "unit": "cm",
+  "xlow": 0,
+  "xhigh": 150,
+  "nbins": 50
+},
+{
+  "name": "v0cand_p",
+  "variable": "v0cand_p",
+  "axtitle": "$\\Lambda^0$ candidate momentum",
+  "unit": "GeV",
+  "xlow": 0,
+  "xhigh": 15,
+  "nbins": 50
+},
+{
+  "name": "v0cand_prel",
+  "variable": "v0cand_prel",
+  "axtitle": "$\\Lambda^0$ candidate relative momentum",
+  "unit": "",
+  "xlow": 0,
+  "xhigh": 0.5,
+  "nbins": 50
+}
+]
