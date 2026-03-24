@@ -13,14 +13,29 @@ They can also be copied over to `Oscar` / `BRUX` if requested.
 
 ### How to set up?
 
-This code should run in a standard FCCAnalyses environment (the same that was used to produce the ntuples).
+**On lxplus**:
+This code can run in a standard FCCAnalyses environment (the same that was used to produce the ntuples).
 Activate it with `source /cvmfs/sw.hsf.org/key4hep/setup.sh`.
 Alternatively, you can run `source setup.sh` (which is just a wrapper around the former command).
 
 Todo: were other packages installed on top of this at some point?
 To figure out and update documentation if this is the case.
 
-Todo: this works on lxplus, but not sure if available on BRUX, to figure out.
+**On Oscar** (experimental):
+The standard setup as on `lxplus` seems not to work, as `/cvmfs` gives errors.
+Instead, a conda environment can be used. You can create one with the following command:
+```
+conda env create -f environment.yaml
+```
+This may take a long time to run, but needs to be done only once.
+If that ran correctly, activate the environment with `conda activate aleph_analysis_env`.
+For exiting the environment, run `conda deactivate`.
+
+**On BRUX** (experimental):
+The standard setup as on `lxplus` seems not to work, even though `/cvmfs` is available.
+Not yet sure why or how, but it seems to work with a little hack to the setup script;
+just use `source setup_brux.sh` instead of `source setup.sh`.
+Alternatively, the setup using a conda environment (as needed for `oscar`) presumably also works on BRUX (though not yet tested).
 
 ### How to run?
 
