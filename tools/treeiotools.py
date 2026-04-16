@@ -21,9 +21,24 @@ def make_writable_tree(tree, records=None):
             record = ak.zip({name[len(tag):]: array for name, array in zip(ak.fields(tree), ak.unzip(tree)) if name.startswith(tag)})
             writebranches[recordname] = record
 
-    # need to remove counter branches as they are added automatically,
+    # need to remove counter branches, as they are anyway added automatically,
     # otherwise gives strange dtype errors...
     writebranches = {k: v for k, v in writebranches.items() if not (k[0]=='n' and k[1].isupper())}
+
+    # the above works fine for 1-level and 2-level awkward arrays,
+    # but it does not seem to be possible to write 3-level arrays (e.g. particles per jet per event);
+    # so instead need to flatten them to 2-level arrays and store an index
+    # to reconstruct the 3-level after reading.
+    branchnames = list(writebranches.keys())[:]
+    for key in branchnames:
+        if writebranches[key].layout.minmax_depth[1]==3:
+            val = writebranches.pop(key)
+            val_flat = ak.flatten(val, axis=2)
+            local_index = ak.local_index(val, axis=1)
+            local_index = ak.broadcast_arrays(local_index, val)[0]
+            index = ak.flatten(local_index, axis=2)
+            writebranches[key] = val_flat
+            writebranches[key + '_idx'] = index
 
     return writebranches
 
@@ -71,3 +86,28 @@ def write_trees(trees, treenames, rootfile, records=None):
     with uproot.recreate(rootfile) as f:
         for tree, treename in zip(writebranches, treenames):
             f[treename] = tree
+
+def reshape_2dto3d_by_index(events):
+    # helper function to reshape arrays flattened to 2D back to 3D.
+    # todo: make more general.
+
+    # find index arrays and corresponding arrays to be reshaped
+    branches = {}
+    idx_branches = [b for b in events.fields if b.endswith('_idx')]
+    for idx_branch in idx_branches:
+        collection = idx_branch.replace('_idx', '')
+        branches[idx_branch] = [b for b in events.fields if b.startswith(collection) and b!=idx_branch]
+
+    # loop over index branches and prepare reshaping
+    for idx_branch, val in branches.items():
+        indices = events[idx_branch]
+        particles_per_jet = ak.run_lengths(indices)
+        particles_per_jet_flat = ak.flatten(particles_per_jet)
+        jets_per_event = ak.num(particles_per_jet)
+        # loop over branches to reshape
+        for branch in val:
+            values = events[branch]
+            # reshape
+            values_flat = ak.flatten(values)
+            temp = ak.unflatten(values_flat, particles_per_jet_flat)
+            events[branch] = ak.unflatten(temp, jets_per_event)
