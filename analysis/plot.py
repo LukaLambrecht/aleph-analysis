@@ -36,8 +36,8 @@ from analysis.external_variables import find_external_files
 from plotting.plot import plot
 
 # global pyplot settings
-plt.rc("text", usetex=True)
-plt.rc("font", family="serif")
+#plt.rc("text", usetex=True)
+#plt.rc("font", family="serif")
 
 
 def make_histograms(datastruct, variables,
