@@ -86,7 +86,7 @@ if __name__=='__main__':
             print(cmd)
             os.system(cmd)
     elif args.runmode=='condor':
-        env_script = os.path.abspath('../../../setup.sh')
+        env_script = os.path.abspath('../setup.sh')
         env_cmd = f'source {env_script}'
         for cmd in cmds:
             ct.submitCommandAsCondorJob('cjob_jetplot', cmd,

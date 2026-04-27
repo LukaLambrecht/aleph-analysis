@@ -64,7 +64,7 @@ if __name__=='__main__':
             print(cmd)
             os.system(cmd)
     elif args.runmode=='condor':
-        env_script = os.path.abspath('../../../setup.sh')
+        env_script = os.path.abspath('../setup.sh')
         env_cmd = f'source {env_script}'
         ct.submitCommandsAsCondorJob('cjob_analysis', cmds,
             jobflavour='workday', conda_activate=env_cmd)
