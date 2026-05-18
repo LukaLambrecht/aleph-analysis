@@ -36,8 +36,8 @@ from analysis.external_variables import find_external_files
 from plotting.plot import plot
 
 # global pyplot settings
-#plt.rc("text", usetex=True)
-#plt.rc("font", family="serif")
+plt.rc("text", usetex=True)
+plt.rc("font", family="serif")
 
 
 def make_histograms(datastruct, variables,
@@ -323,6 +323,7 @@ def make_events(dtypedict,
         regions = None,
         recalculate_regions = False,
         external_variables = None,
+        splitdict = None,
         xsections = None,
         lumi = None):
     '''
@@ -415,6 +416,18 @@ def make_events(dtypedict,
                     msg = 'WARNINIG: overwriting existing branch "weight"!'
                     print(msg)
                 events[dtype][process_key]['weight'] = weights
+
+            # do splitting if requested
+            if splitdict is not None and process_key in splitdict.keys():
+                print('Splitting in subprocesses...')
+                nsubsum = 0
+                for subprocess_key, subprocess_selection in splitdict[process_key].items():
+                    mask = get_selection_mask(events[dtype][process_key], subprocess_selection).to_numpy().astype(bool)
+                    print(f'  - Subprocess {subprocess_key}: {np.sum(mask)} / {len(mask)} entries.')
+                    events[dtype][subprocess_key] = events[dtype][process_key][mask]
+                    nsubsum += np.sum(mask)
+                print(f'  - Total: {nsubsum} / {len(mask)} entries.')
+                events[dtype].pop(process_key)
 
         # end loop over processes
     # end loop over dtypes
