@@ -388,7 +388,7 @@ if __name__=='__main__':
 
             # set y-axis title
             yaxtitle = 'Jets'
-            if variable.variable.startswith('pfcand_'): yaxtitle = 'Jet contituents'
+            if variable.variable.startswith('pfcand_'): yaxtitle = 'Jet constituents'
             if variable.variable.startswith('sv_'): yaxtitle = 'Secondary vertices'
             if variable.variable.startswith('v0cand_'): yaxtitle = 'V0 candidates'
             include_binwidth = True # maybe later add as argument
