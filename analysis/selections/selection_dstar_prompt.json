@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "DStarCandidates_dstarvtx_dxyz < 0.05"
+  ],
+  "application": ["DStarCandidates_*"]
+}

@@ -5,7 +5,35 @@ import numpy as np
 import awkward as ak
 
 
+
 def load_eventselection(selectionjson, expect=None, nexpect=None):
+
+    # in case a list of event selections is provided
+    # note: for this case to make sense, we have to assume one of two scenarios:
+    #       - There is only one selection per file (each of which has an arbitrary name),
+    #         and they are combined with logical AND.
+    #       - There are multiple selections per file, with the same set of names in each file,
+    #         and they are combined name by name with logical AND.
+    #       (maybe to be extended later)
+    if isinstance(selectionjson, list):
+        first = selectionjson[0]
+        selections = load_eventselection(first, expect=expect, nexpect=nexpect)
+        names = sorted(list(selections.keys()))
+        for other in selectionjson[1:]:
+            selections_test = load_eventselection(other, expect=expect, nexpect=nexpect)
+            names_test = sorted(list(selections_test.keys()))
+            if len(names) == 1 and len(names_test) == 1:
+                oldkey = list(selections.keys())[0]
+                oldsel = selections.pop(oldkey)
+                newkey = f'{oldkey} + {names_test[0]}'
+                selections[newkey] = f'({oldsel} & {selections_test[names_test[0]]})'
+            else:
+                if names_test != names: raise Exception('Event selections are not compatible.')
+                for key, val in selections_test.items():
+                    selections[key] = f'({selections[key]} & {val})'
+        return selections
+
+    # regular case of a single json file
     with open(selectionjson, 'r') as f:
         selections = json.load(f)
     keys = list(selections.keys())
@@ -14,7 +42,7 @@ def load_eventselection(selectionjson, expect=None, nexpect=None):
             if expected_key not in keys:
                 msg = f'Expected key {expected_key} not found in {selectionjson}.'
                 msg += f' Options are {keys}.'
-                raise Exception
+                raise Exception(msg)
     if nexpect is not None:
         if len(keys)!=nexpect:
             msg = f'Found unexpected number of selections in {selectionjson}:'

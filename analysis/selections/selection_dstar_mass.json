@@ -1,0 +1,8 @@
+{
+  "selection": [
+    "DStarCandidates_d0_massDiff > 0.142",
+    "DStarCandidates_d0_massDiff < 0.148",
+    "DStarCandidates_isOppositeSign"
+  ],
+  "application": ["DStarCandidates_*"]
+}

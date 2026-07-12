@@ -1,0 +1,5 @@
+{
+  "At least 1 D* candidate": [
+    "ak.num(DStarCandidates_pt)>=1"
+  ]
+}

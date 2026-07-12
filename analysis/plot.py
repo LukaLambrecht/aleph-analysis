@@ -713,7 +713,7 @@ if __name__=='__main__':
     parser.add_argument('-v', '--variables', required=True, nargs='+')
     parser.add_argument('-o', '--outputdir', required=True)
     parser.add_argument('--objectselection', default=None, nargs='+')
-    parser.add_argument('--eventselection', default=None)
+    parser.add_argument('--eventselection', default=None, nargs='+')
     parser.add_argument('--select_processes', default=[], nargs='+')
     parser.add_argument('--regions', default=None)
     parser.add_argument('--recalculate_regions', default=False, action='store_true')
