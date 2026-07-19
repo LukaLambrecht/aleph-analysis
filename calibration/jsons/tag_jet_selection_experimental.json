@@ -1,0 +1,19 @@
+{
+  "b_jets": [
+    {"branch": "Jets_score_isB", "min": 0.9}
+  ],
+  "c_jets": [
+    {"branch": "Jets_score_isC", "min": 0.7},
+    {"branch": "Jets_score_isB", "max": 0.1}
+  ],
+  "s_jets": [
+    {"branch": "Jets_score_isS", "min": 0.5},
+    {"branch": "Jets_score_isC", "max": 0.1},
+    {"branch": "Jets_score_isB", "max": 0.1}
+  ],
+  "ud_jets": [
+    {"branch": "Jets_score_isUDG", "min": 0.5},
+    {"branch": "Jets_score_isC", "max": 0.1},
+    {"branch": "Jets_score_isB", "max": 0.1}
+  ]
+}

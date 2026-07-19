@@ -14,6 +14,17 @@ from tools.variabletools import DoubleHistogramVariable
 from analysis.eventselection import eval_expression
 
 
+def default_flavour_labels():
+    # default LaTeX labels for the (anti)quark pair flavour subprocesses
+    # (shared between default plot labeling and flavour-region annotations)
+    return {
+        'bb': r'$b\overline{b}$',
+        'cc': r'$c\overline{c}$',
+        'ss': r'$s\overline{s}$',
+        'uudd': r'$u\overline{u}$, $d\overline{d}$',
+    }
+
+
 def make_hist(values, variable, secondary_values=None, **kwargs):
     # helper function to switch between make_hist_single and make_hist_double.
     if isinstance(variable, DoubleHistogramVariable):

@@ -217,6 +217,14 @@ def plot(sig=None, bkg=None, data=None,
             nratiopads = len(ratios)
             fig, axs = plt.subplots(figsize=(8,6), nrows=(nratiopads+1),
                          height_ratios = [4] + [1]*nratiopads)
+    else:
+        # a pre-existing figure and (single) axis were provided
+        # (e.g. when assembling a grid of subplots externally);
+        # ratio pads are not supported in this case.
+        if ratios is not None and len(ratios)>0:
+            msg = 'Providing both a pre-existing axis and ratio pads is not supported.'
+            raise Exception(msg)
+        axs = [ax]
 
     # upper pad
     ax = axs[0]

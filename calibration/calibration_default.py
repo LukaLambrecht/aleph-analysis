@@ -22,7 +22,7 @@ if __name__=='__main__':
     parser.add_argument('-d', '--data', required=True)
     parser.add_argument('-o', '--outputdir', required=True)
     parser.add_argument('-e', '--external_variables', required=True)
-    parser.add_argument('-b', '--calibration_branch', required=True)
+    parser.add_argument('-t', '--jet_tag_selection', default='jsons/jet_tag_selection.json')
     parser.add_argument('-r', '--runmode', default='local', choices=['local', 'condor'])
     args = parser.parse_args()
 
@@ -39,6 +39,7 @@ if __name__=='__main__':
     cmd += f' --eventselection ../analysis/selections/selection.json'
     cmd += f' --year 1994 --xsections ../analysis/cross-sections/cross_sections.json'
     cmd += f' --merge ../analysis/merging/merging.json --split ../analysis/merging/splitting.json'
+    cmd += f' --tag_jet_selection {args.jet_tag_selection}'
     cmds.append(cmd)
 
     # apply calibration
@@ -46,7 +47,6 @@ if __name__=='__main__':
     cmd += f' -s {args.sim}'
     cmd += f' -d {args.data}'
     cmd += f' -c {os.path.join(args.outputdir, "output.json")}'
-    cmd += f' -b {args.calibration_branch}'
     cmd += f' -o {args.outputdir}'
     cmd += f' --external_variables {args.external_variables}'
     cmd += f' --objectselection ../analysis/selections/selection_jets.json'
@@ -56,7 +56,7 @@ if __name__=='__main__':
     cmd += f' --merge ../analysis/merging/merging.json --split ../analysis/merging/splitting.json'
     cmd += f' -v ../analysis/variables/variables_scores_withstrange.json ../analysis/variables/variables_event.json'
     cmd += f' --dolog'
-    cmds.append(cmd)
+    #cmds.append(cmd)
 
     # run or submit commands
     if args.runmode=='local':

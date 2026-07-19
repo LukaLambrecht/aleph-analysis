@@ -26,8 +26,244 @@ from analysis.eventselection import load_eventselection, get_variable_names
 from analysis.eventselection import get_selection_mask
 from analysis.objectselection import load_objectselection
 from analysis.plot import make_histograms, make_events, plot_hists_default
+from analysis.plot import get_default_style_dicts
 from analysis.external_variables import read_external_variables
+from tools.plottools import default_flavour_labels
 from plotting.plot import plot
+
+
+def build_tag_selection_expression(cuts, idx):
+    '''
+    Build a tag jet selection expression from a list of cuts.
+    Input arguments:
+    - cuts: list of dicts, each with key "branch" and at least one of "min", "max"
+      (e.g. [{"branch": "Jets_score_isB", "min": 0.9}]).
+    - idx: index of the tag jet within the per-event jet collection.
+    '''
+    subexpressions = []
+    for cut in cuts:
+        branch = cut['branch']
+        if 'min' not in cut and 'max' not in cut:
+            msg = f'Cut {cut} does not specify "min" and/or "max".'
+            raise Exception(msg)
+        if 'min' in cut: subexpressions.append(f'{branch}[:, {idx}] > {cut["min"]}')
+        if 'max' in cut: subexpressions.append(f'{branch}[:, {idx}] < {cut["max"]}')
+    return ' & '.join([f'({s})' for s in subexpressions])
+
+
+def make_summary_plot(hists_combined, variables, tag_selections, outputdir,
+        colordict=None, labeldict=None, styledict=None, stacklist=None,
+        region_labeldict=None, datatag='data', dolog=True):
+    '''
+    Make a single grid figure combining all (tag region, probe variable) panels.
+    Rows: tag regions (i.e. flavour-enriched regions based on the tag jet).
+    Columns: probe jet score variable.
+    The ALEPH logo is only drawn on the top-left panel, and the legend only
+    on the top-right panel; axis titles are only drawn on the outer edges.
+    If dolog is True, an additional version with log-scale y-axes is made.
+    '''
+
+    region_names = list(tag_selections.keys())
+    nrows = len(region_names)
+    ncols = len(variables)
+
+    # get default style dicts (only used for whichever of these were not explicitly provided)
+    dummykey = f'{region_names[0]}_{variables[0].name}'
+    sim_processes = list(hists_combined['sim'][dummykey].keys())
+    default_colordict, default_labeldict, default_styledict, default_stacklist, _ = (
+        get_default_style_dicts(sim_processes))
+    if colordict is None: colordict = default_colordict
+    if labeldict is None: labeldict = default_labeldict
+    if styledict is None: styledict = default_styledict
+    if stacklist is None: stacklist = default_stacklist
+
+    def make_grid(logscale=False):
+        fig, axs = plt.subplots(nrows=nrows, ncols=ncols,
+                    figsize=(4.2*ncols, 3.6*nrows), squeeze=False)
+
+        for row_idx, region_name in enumerate(region_names):
+            for col_idx, variable in enumerate(variables):
+                ax = axs[row_idx, col_idx]
+                region_variable_key = f'{region_name}_{variable.name}'
+                is_top_left = (row_idx==0 and col_idx==0)
+                is_top_right = (row_idx==0 and col_idx==ncols-1)
+                is_bottom_row = (row_idx==nrows-1)
+                is_left_col = (col_idx==0)
+
+                # get nominal histograms for simulation and data
+                hists_sim_nominal = {
+                    process_key: hists_combined['sim'][region_variable_key][process_key]['nominal']
+                    for process_key in hists_combined['sim'][region_variable_key].keys()
+                }
+                hists_data = {
+                    process_key: hists_combined['data'][region_variable_key][process_key]['nominal']
+                    for process_key in hists_combined['data'][region_variable_key].keys()
+                }
+                data = {datatag: hists_data[datatag]}
+
+                # do the actual plotting on the provided axis
+                plot(bkg=hists_sim_nominal, data=data,
+                     variable=variable,
+                     fig=fig, ax=ax,
+                     stacklist=stacklist, colordict=colordict, labeldict=labeldict, styledict=styledict,
+                     logscale=logscale,
+                     docms=is_top_left,
+                     yaxtitle=('Jets' if is_left_col else None),
+                     dolegend=is_top_right)
+
+                # add headroom at the top of the panel so the region annotation
+                # (drawn below) does not overlap the histogram
+                if not logscale:
+                    ax.set_ylim((0, ax.get_ylim()[1]*1.6))
+                else:
+                    histarray = np.array([h[0] for h in hists_sim_nominal.values()]
+                                          + [data[datatag][0]])
+                    if np.any(histarray > 0):
+                        ymin = np.min(histarray[np.nonzero(histarray)])
+                        ax.set_ylim((ymin, ax.get_ylim()[1]**1.6))
+
+                # remove axis titles except on the outer edges
+                if not is_bottom_row:
+                    ax.set_xlabel('')
+                if not is_left_col:
+                    ax.set_ylabel('')
+
+                # add flavour-enriched-region annotation
+                if region_labeldict is not None and region_name in region_labeldict:
+                    ax.text(0.05, 0.95, region_labeldict[region_name], ha='left', va='top', fontsize=13,
+                            transform=ax.transAxes)
+
+        fig.tight_layout()
+        return fig
+
+    # make linear-scale version
+    fig = make_grid(logscale=False)
+    figname = os.path.join(outputdir, 'summary.png')
+    fig.savefig(figname)
+    fig.savefig(figname.replace('.png', '.pdf'))
+    plt.close(fig)
+    print(f'Summary figure saved to {figname}.')
+
+    # make log-scale version
+    if dolog:
+        fig = make_grid(logscale=True)
+        figname = os.path.join(outputdir, 'summary_log.png')
+        fig.savefig(figname)
+        fig.savefig(figname.replace('.png', '.pdf'))
+        plt.close(fig)
+        print(f'Summary figure saved to {figname}.')
+
+
+def smooth_values(values, errors, window):
+    '''
+    Smooth an array of values with a double-sided sliding window of adjustable size,
+    weighting each point in the window by the inverse square of its statistical uncertainty
+    (i.e. an inverse-variance weighted moving average).
+    Input arguments:
+    - values: 1D array of values to smooth.
+    - errors: 1D array of statistical uncertainties on values (same shape as values).
+      Points with a non-positive or infinite uncertainty carry no information and are
+      given zero weight (e.g. bins for which no simulation statistics were available).
+    - window: half-width of the sliding window, in number of neighboring bins to include
+      on either side of the point in question (i.e. the full window size is 2*window+1).
+    '''
+    values = np.asarray(values, dtype=float)
+    errors = np.asarray(errors, dtype=float)
+    n = len(values)
+    with np.errstate(divide='ignore'):
+        weights = np.where((errors>0) & np.isfinite(errors), 1./np.square(errors), 0.)
+    smoothed = np.copy(values)
+    for i in range(n):
+        lo = max(0, i-window)
+        hi = min(n, i+window+1)
+        w = weights[lo:hi]
+        wsum = np.sum(w)
+        if wsum>0: smoothed[i] = np.sum(w*values[lo:hi])/wsum
+    return smoothed
+
+
+def make_scale_factor_plot(output_struct, outputfile,
+        region_labeldict=None, region_colordict=None, axtitledict=None, ylim=(0, 2),
+        smooth_window=None):
+    '''
+    Make a grid figure of the scale factor curves as produced by calibration.py
+    (i.e. the content of output.json), with one panel per (tag region, probe score) combination.
+    Rows: tag regions (i.e. flavour-enriched regions based on the tag jet).
+    Columns: probe jet score variable.
+    Input arguments:
+    - output_struct: dict of the form
+      {region_name: {variable_name: {"bins": [...], "values": [...], "errors": [...]}}}
+      (same structure as written to / read from output.json). The "errors" key is optional,
+      but required if smooth_window is used.
+    - outputfile: path of the file to write the figure to (a companion .pdf is
+      written alongside it, next to whatever extension outputfile has, typically .png).
+    - region_colordict: optional dict mapping region_name to a line color
+      (e.g. the same color used for that flavour's process in the stacked plots).
+    - axtitledict: optional dict mapping variable_name to x-axis title.
+    - ylim: shared y-axis range for all panels (default (0, 2), matching the clipping range
+      applied to the aggregated per-event weight in apply_calibration.py).
+    - smooth_window: if provided, smooth the scale factor curves with this half-window size
+      before plotting (see smooth_values); the underlying output_struct is left untouched.
+    '''
+
+    region_names = list(output_struct.keys())
+    variable_names = list(output_struct[region_names[0]].keys())
+    nrows = len(region_names)
+    ncols = len(variable_names)
+
+    fig, axs = plt.subplots(nrows=nrows, ncols=ncols,
+                figsize=(4.2*ncols, 3.6*nrows), squeeze=False)
+
+    for row_idx, region_name in enumerate(region_names):
+        for col_idx, variable_name in enumerate(variable_names):
+            ax = axs[row_idx, col_idx]
+            is_top_left = (row_idx==0 and col_idx==0)
+            is_bottom_row = (row_idx==nrows-1)
+            is_left_col = (col_idx==0)
+
+            bins = np.array(output_struct[region_name][variable_name]['bins'])
+            values = np.array(output_struct[region_name][variable_name]['values'])
+            if smooth_window is not None:
+                if 'errors' not in output_struct[region_name][variable_name]:
+                    msg = 'Smoothing was requested, but no "errors" were found in output_struct'
+                    msg += f' for region "{region_name}", variable "{variable_name}";'
+                    msg += ' regenerate output.json with an updated calibration.py to enable smoothing.'
+                    raise Exception(msg)
+                errors = np.array(output_struct[region_name][variable_name]['errors'])
+                values = smooth_values(values, errors, smooth_window)
+            color = 'black'
+            if region_colordict is not None and region_name in region_colordict:
+                color = region_colordict[region_name]
+
+            # reference line at unity, and the scale factor curve itself
+            ax.axhline(y=1, color='grey', linestyle='dashed')
+            ax.stairs(values, edges=bins, color=color, linewidth=2.5)
+
+            ax.set_ylim(ylim)
+            ax.tick_params(axis='both', which='both', labelsize=15)
+            ax.minorticks_on()
+
+            if is_top_left:
+                ax.text(0., 1., r'$\bf{ALEPH}$', ha='left', va='bottom', fontsize=20,
+                        transform=ax.transAxes)
+
+            if is_bottom_row and axtitledict is not None and variable_name in axtitledict:
+                ax.set_xlabel(axtitledict[variable_name], fontsize=22)
+            if is_left_col:
+                ax.set_ylabel('Scale factor', fontsize=22)
+
+            if region_labeldict is not None and region_name in region_labeldict:
+                ax.text(0.05, 0.95, region_labeldict[region_name], ha='left', va='top', fontsize=13,
+                        transform=ax.transAxes)
+
+    fig.tight_layout()
+    outputdir = os.path.dirname(outputfile)
+    if len(outputdir)>0 and not os.path.exists(outputdir): os.makedirs(outputdir)
+    fig.savefig(outputfile)
+    root, ext = os.path.splitext(outputfile)
+    fig.savefig(root + '.pdf')
+    plt.close(fig)
+    print(f'Scale factor figure saved to {outputfile}.')
 
 
 if __name__=='__main__':
@@ -47,6 +283,11 @@ if __name__=='__main__':
     parser.add_argument('--xsections', default=None)
     parser.add_argument('--merge', default=None)
     parser.add_argument('--split', default=None)
+    parser.add_argument('--tag_jet_selection', required=True)
+    parser.add_argument('--smooth_window', default=None, type=int,
+      help='If provided, smooth the scale factor plot with a double-sided sliding window'
+           + ' of this half-width (in number of bins on either side), with each point'
+           + ' weighted by its statistical uncertainty. Does not affect output.json.')
     args = parser.parse_args()
 
     # set weight variations to include in the uncertainty band
@@ -79,6 +320,12 @@ if __name__=='__main__':
                     + f' {select_processes})')
         event_selection_name = list(eventselection.keys())[0]
         eventselection = eventselection[event_selection_name]
+
+    # read tag jet selection
+    with open(args.tag_jet_selection, 'r') as f:
+        tag_jet_selection = json.load(f)
+    print('Found following tag jet selection:')
+    print(json.dumps(tag_jet_selection, indent=2))
 
     # read cross-sections
     xsections = None
@@ -195,10 +442,33 @@ if __name__=='__main__':
     (tag_idx, probe_idx) = (0, 1)
     #(tag_idx, probe_idx) = (1, 0) # to see if it makes a difference
     tag_selections = {
-        'b': f'Jets_score_isB[:, {tag_idx}] > 0.9',
-        'c': f'Jets_score_isC[:, {tag_idx}] > 0.7',
-        's': f'Jets_score_isS[:, {tag_idx}] > 0.5',
-        'ud': f'Jets_score_isUDG[:, {tag_idx}] > 0.5',
+        key: build_tag_selection_expression(cuts, tag_idx)
+        for key, cuts in tag_jet_selection.items()
+    }
+
+    # map each tag region to the corresponding truth-flavour subprocess
+    # (as defined in the splitting instructions, e.g. "b_jets" region <-> "bb" subprocess)
+    process_of_interest = {
+        'b_jets': 'bb',
+        'c_jets': 'cc',
+        's_jets': 'ss',
+        'ud_jets': 'uudd',
+    }
+
+    # build annotation labels for each tag region
+    # (reusing the same LaTeX flavour labels as used in the legend)
+    flavour_labels = default_flavour_labels()
+    region_labeldict = {
+        region_name: flavour_labels[process_of_interest[region_name]] + '-enriched region'
+        for region_name in tag_selections.keys() if region_name in process_of_interest
+    }
+
+    # map each tag region to the color used for the corresponding process
+    # in the stacked plots (e.g. "b_jets" region <-> "bb" color)
+    process_colordict, _, _, _, _ = get_default_style_dicts(list(process_of_interest.values()))
+    region_colordict = {
+        region_name: process_colordict[process_of_interest[region_name]]
+        for region_name in tag_selections.keys() if region_name in process_of_interest
     }
 
     # make masks
@@ -234,25 +504,25 @@ if __name__=='__main__':
     # make plots of probe jet
     variables = [
         HistogramVariable.fromdict({
-            "name": "score_isB",
+            "name": "b_score",
             "variable": f"Jets_score_isB[:, {probe_idx}]",
             "bins": np.linspace(0, 1, num=51),
             "axtitle": "Probe jet classifier b score"
         }),
         HistogramVariable.fromdict({
-            "name": "score_isC",
+            "name": "c_score",
             "variable": f"Jets_score_isC[:, {probe_idx}]",
             "bins": np.linspace(0, 1, num=51),
             "axtitle": "Probe jet classifier c score"
         }),
         HistogramVariable.fromdict({
-            "name": "score_isS",
+            "name": "s_score",
             "variable": f"Jets_score_isS[:, {probe_idx}]",
             "bins": np.linspace(0, 1, num=51),
             "axtitle": "Probe jet classifier s score"
         }),
         HistogramVariable.fromdict({
-            "name": "score_isUDG",
+            "name": "ud_score",
             "variable": f"Jets_score_isUDG[:, {probe_idx}]",
             "bins": np.linspace(0, 1, num=51),
             "axtitle": "Probe jet classifier udg score"
@@ -266,33 +536,47 @@ if __name__=='__main__':
     plot_hists_default(hists_combined, variables,
           outputdir=args.outputdir,
           regions=tag_selections,
-          datatag='data')
+          datatag='data',
+          region_labeldict=region_labeldict,
+          dolog=True)
 
-    # calculate ratios to store in output
+    # make summary grid figure combining all regions and variables
+    make_summary_plot(hists_combined, variables, tag_selections, args.outputdir,
+          region_labeldict=region_labeldict, datatag='data')
+
+    # calculate ratios (and their statistical uncertainties) to store in output
     ratios = {}
-    process_of_interest = {
-        'b': 'bb',
-        'c': 'cc',
-        's': 'ss',
-        'ud': 'uudd'
-    }
+    ratio_errors = {}
     for region_name in tag_selections.keys():
         ratios[region_name] = {}
+        ratio_errors[region_name] = {}
         poi = process_of_interest.get(region_name, region_name)
         for variable in variables:
             region_variable_key = f'{region_name}_{variable.name}'
             counts_data = hists_combined['data'][region_variable_key]['data']['nominal'][0]
+            errors_data = hists_combined['data'][region_variable_key]['data']['nominal'][1]
             counts_sim_this = []
             counts_sim_other = []
+            errors_sim_this = []
+            errors_sim_other = []
             for process_key in hists_combined['sim'][region_variable_key].keys():
                 counts = hists_combined['sim'][region_variable_key][process_key]['nominal'][0]
-                if process_key == poi: counts_sim_this.append(counts)
-                else: counts_sim_other.append(counts)
+                errors = hists_combined['sim'][region_variable_key][process_key]['nominal'][1]
+                if process_key == poi:
+                    counts_sim_this.append(counts)
+                    errors_sim_this.append(errors)
+                else:
+                    counts_sim_other.append(counts)
+                    errors_sim_other.append(errors)
             if len(counts_sim_this)!=1:
                 msg = f'Exactly one process of interest was expected, but found {len(counts_sim_this)}'
                 raise Exception(msg)
             counts_sim_this = sum(counts_sim_this)
             counts_sim_other = sum(counts_sim_other)
+            errors_sim_this = np.sqrt(sum([np.square(e) for e in errors_sim_this]))
+            errors_sim_other = (np.sqrt(sum([np.square(e) for e in errors_sim_other]))
+                                 if len(errors_sim_other)>0 else np.zeros(len(counts_data)))
+            errors_sim_total = np.sqrt(np.square(errors_sim_this) + np.square(errors_sim_other))
             # original: just do data / total sim
             numerator = np.clip(counts_data, a_min=0, a_max=None)
             counts_sim_this += counts_sim_other
@@ -304,6 +588,15 @@ if __name__=='__main__':
             ratio = np.ones(len(counts_data))
             ratio = np.where(counts_sim_this > 0, np.divide(numerator, denominator), 1)
             ratios[region_name][variable.name] = ratio
+            # propagate statistical uncertainties onto the ratio
+            # (bins without simulation statistics get an infinite uncertainty,
+            #  i.e. they carry no information and get zero weight when smoothing)
+            safe_numerator = np.clip(numerator, a_min=1, a_max=None)
+            rel_error_num = errors_data / safe_numerator
+            rel_error_denom = errors_sim_total / denominator
+            ratio_error = ratio * np.sqrt(np.square(rel_error_num) + np.square(rel_error_denom))
+            ratio_error = np.where(counts_sim_this > 0, ratio_error, np.inf)
+            ratio_errors[region_name][variable.name] = ratio_error
 
     # write output file
     output_struct = {}
@@ -311,11 +604,20 @@ if __name__=='__main__':
         output_struct[region_name] = {}
         for variable in variables:
             values = ratios[region_name][variable.name]
+            errors = ratio_errors[region_name][variable.name]
             bins = variable.bins
             output_struct[region_name][variable.name] = {
                 "bins": list(bins),
-                "values": list(values)
+                "values": list(values),
+                "errors": [float(e) for e in errors]
             }
     outputfile = os.path.join(args.outputdir, 'output.json')
     with open(outputfile, 'w') as f:
         json.dump(output_struct, f, indent=2)
+
+    # make a grid figure of the scale factor curves
+    axtitledict = {variable.name: variable.axtitle for variable in variables}
+    scale_factor_outputfile = os.path.join(args.outputdir, 'scale_factors.png')
+    make_scale_factor_plot(output_struct, scale_factor_outputfile,
+        region_labeldict=region_labeldict, region_colordict=region_colordict, axtitledict=axtitledict,
+        smooth_window=args.smooth_window)

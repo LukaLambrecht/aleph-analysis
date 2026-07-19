@@ -23,6 +23,7 @@ from tools.lumitools import get_lumidict, get_sqrtsdict
 from tools.plottools import make_hist_from_events
 from tools.plottools import merge_events, merge_sampledict
 from tools.plottools import make_batches
+from tools.plottools import default_flavour_labels
 from tools.processinfo import ProcessInfoCollection, ProcessCollection
 from analysis.eventselection import load_eventselection, get_variable_names
 from analysis.eventselection import eval_expression
@@ -436,11 +437,50 @@ def make_events(dtypedict,
     return events
 
 
+def get_default_style_dicts(sim_processes, shapes=False):
+    '''
+    Get the default colordict, labeldict, styledict, stacklist and normalize setting
+    used by plot_hists_default, factored out so other callers (e.g. summary grid plots)
+    can reuse the exact same styling.
+    '''
+
+    # make color dict
+    colordict = {}
+    colordict['qqb'] = 'grey'
+    colordict['light'] = 'grey'
+    colordict['uudd'] = 'paleturquoise'
+    colordict['ss'] = 'dodgerblue'
+    colordict['cc'] = 'slateblue'
+    colordict['bb'] = 'darkorchid'
+
+    # make label dict
+    labeldict = {}
+    for p in sim_processes:
+        labeldict[p] = p
+    labeldict.update(default_flavour_labels())
+
+    # set histogram styles
+    styledict = {}
+    for p in sim_processes: styledict[p] = 'fill'
+    if shapes:
+        for p in sim_processes: styledict[p] = 'step'
+
+    # set histogram stacking
+    stacklist = [p for p in sim_processes]
+    normalize = False
+    if shapes:
+        stacklist = []
+        normalize = True
+
+    return colordict, labeldict, styledict, stacklist, normalize
+
+
 def plot_hists_default(hists_combined, variables, outputdir,
       regions=None, datatag=None,
       colordict=None, labeldict=None, styledict=None, stacklist=None,
       shapes=False, normalizesim=False, dolog=False,
-      extracmstext=None, lumiheader=None, event_selection_name=None, select_processes=None):
+      extracmstext=None, lumiheader=None, event_selection_name=None, select_processes=None,
+      region_labeldict=None):
     '''
     Default plotting loop
     '''
@@ -449,40 +489,15 @@ def plot_hists_default(hists_combined, variables, outputdir,
     dummykey = list(hists_combined['sim'].keys())[0]
     sim_processes = list(hists_combined['sim'][dummykey].keys())
 
-    # make color dict
-    if colordict is None:
-        colordict = {}
-        colordict['qqb'] = 'grey'
-        colordict['light'] = 'grey'
-        colordict['uudd'] = 'paleturquoise'
-        colordict['ss'] = 'dodgerblue'
-        colordict['cc'] = 'slateblue'
-        colordict['bb'] = 'darkorchid'
-
-    # make label dict
-    if labeldict is None:
-        labeldict = {}
-        for p in sim_processes:
-            labeldict[p] = p
-        labeldict['bb'] = r'$b\overline{b}$'
-        labeldict['cc'] = r'$c\overline{c}$'
-        labeldict['ss'] = r'$s\overline{s}$'
-        labeldict['uudd'] = r'$u\overline{u}$, $d\overline{d}$'
-
-    # set histogram styles
-    if styledict is None:
-        styledict = {}
-        for p in sim_processes: styledict[p] = 'fill'
-        if shapes:
-            for p in sim_processes: styledict[p] = 'step'
-
-    # set histogram stacking
-    if stacklist is None:    
-        stacklist = [p for p in sim_processes]
-        normalize = False
-        if shapes:
-            stacklist = []
-            normalize = True
+    # get default style dicts (only used for whichever of these were not explicitly provided)
+    default_colordict, default_labeldict, default_styledict, default_stacklist, default_normalize = (
+        get_default_style_dicts(sim_processes, shapes=shapes))
+    if colordict is None: colordict = default_colordict
+    if labeldict is None: labeldict = default_labeldict
+    if styledict is None: styledict = default_styledict
+    if stacklist is None:
+        stacklist = default_stacklist
+        normalize = default_normalize
 
     # loop over regions and variables
     if regions is None: regions = {'baseline': None}
@@ -603,6 +618,9 @@ def plot_hists_default(hists_combined, variables, outputdir,
             #        label += ' (for {})'.format(', '.join(select_processes))
             #    axs[0].text(0.05, 0.85, label, ha='left', va='top', fontsize=12,
             #      transform=axs[0].transAxes)
+            if region_labeldict is not None and region_name in region_labeldict:
+                axs[0].text(0.05, 0.95, region_labeldict[region_name], ha='left', va='top', fontsize=17,
+                  transform=axs[0].transAxes)
             if normalizesim:
                 axs[0].text(0.05, 0.8, 'Simulation normalized to data', ha='left', va='top', fontsize=15,
                   transform=axs[0].transAxes)
@@ -667,6 +685,9 @@ def plot_hists_default(hists_combined, variables, outputdir,
                 #        label += ' (for {})'.format(', '.join(select_processes))
                 #    axs[0].text(0.05, 0.85, label, ha='left', va='top', fontsize=12,
                 #      transform=axs[0].transAxes)
+                if region_labeldict is not None and region_name in region_labeldict:
+                    axs[0].text(0.05, 0.95, region_labeldict[region_name], ha='left', va='top', fontsize=17,
+                      transform=axs[0].transAxes)
                 if normalizesim:
                     axs[0].text(0.05, 0.8, 'Simulation normalized to data', ha='left', va='top', fontsize=15,
                       transform=axs[0].transAxes)

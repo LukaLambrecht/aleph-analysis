@@ -23,6 +23,15 @@ from analysis.eventselection import load_eventselection, get_variable_names
 from analysis.eventselection import get_selection_mask
 from analysis.objectselection import load_objectselection
 from analysis.plot import make_events, make_histograms, plot_hists_default
+from calibration import smooth_values
+
+# map each classifier score branch to the probe variable name used in calibration.py
+BRANCH_TO_SCORE_NAME = {
+    'Jets_score_isB': 'b_score',
+    'Jets_score_isC': 'c_score',
+    'Jets_score_isS': 's_score',
+    'Jets_score_isUDG': 'ud_score',
+}
 
 
 if __name__=='__main__':
@@ -32,7 +41,12 @@ if __name__=='__main__':
     parser.add_argument('-s', '--sim', required=True, nargs='+')
     parser.add_argument('-d', '--data', default=None, nargs='+')
     parser.add_argument('-c', '--calibration', default=None)
-    parser.add_argument('-b', '--calibration_branch', default=None)
+    parser.add_argument('--smooth_window', default=None, type=int,
+      help='If provided, smooth the scale factors with a double-sided sliding window'
+           + ' of this half-width (in number of bins on either side), with each point'
+           + ' weighted by its statistical uncertainty, before applying them.'
+           + ' Requires "errors" to be present in the calibration file'
+           + ' (i.e. produced by an updated calibration.py).')
     parser.add_argument('-v', '--variables', required=True, nargs='+')
     parser.add_argument('-o', '--outputdir', required=True)
     parser.add_argument('--objectselection', default=None)
@@ -260,67 +274,80 @@ if __name__=='__main__':
     # load calibration
     with open(args.calibration, 'r') as f:
         calibration = json.load(f)
-    if args.calibration_branch is None:
-        raise Exception('Must provide a calibration branch name.')
 
-    # apply calibration
-    for dtype in events_combined.keys():
-        if dtype != 'sim': continue
-        for process_key in events_combined[dtype].keys():
-            this_events = events_combined[dtype][process_key]
-            score_name = args.calibration_branch.replace('Jets_', '')
-            scores = this_events[args.calibration_branch]
-            scores_counts = ak.num(scores)
-            scores_flat = ak.flatten(scores)
-            geneventtype = this_events['genEventType']
-            calibration_weights = np.ones(len(this_events))
-            for key, val in calibration.items():
-                #if key not in ['light', 'c']: continue # for testing
-                # get bins and values
-                bins = np.array(val[score_name]['bins'])
-                values = np.array(val[score_name]['values'])
-                # get per-jet values and aggregate to per-event values
-                bin_ids = np.digitize(scores_flat, bins, right=True) - 1
-                calibration_values_flat = values[bin_ids]
-                calibration_values = ak.unflatten(calibration_values_flat, scores_counts)
-                calibration_values_aggregated = np.prod(calibration_values, axis=1).to_numpy()
-                #calibration_values_aggregated = calibration_values[:, 0].to_numpy() # alternative for testing
-                #calibration_values_aggregated = calibration_values[:, 1].to_numpy() # alternative for testing
-                calibration_values_aggregated = np.clip(calibration_values_aggregated, a_min=0.5, a_max=2) # for testing
-                # make mask where to apply these
-                mapping = {'b': 'bb', 'c': 'cc', 's': 'ss', 'ud': 'uudd'}
-                mask_selection = splitdict[process_key][mapping[key]]
-                mask = get_selection_mask(this_events, mask_selection)
-                calibration_weights = np.where(mask, calibration_values_aggregated, calibration_weights)
+    # map each tag region (as used in calibration.py / output.json) to the
+    # corresponding truth-flavour subprocess (as defined in the splitting instructions)
+    mapping = {'b_jets': 'bb', 'c_jets': 'cc', 's_jets': 'ss', 'ud_jets': 'uudd'}
 
-                # for debugging: make distributions of the applied weights
-                outputdir = os.path.join(args.outputdir, 'weights')
-                if not os.path.exists(outputdir): os.makedirs(outputdir)
-                bins = np.linspace(0, 3, num=51)
-                fig, ax = plt.subplots()
-                ax.hist(calibration_values_flat, bins=bins, density=True,
-                  histtype='step', color='blue', label='Per-jet reweighting factors')
-                ax.hist(calibration_values_aggregated, bins=bins, density=True,
-                  histtype='step', color='purple', label='Per-event reweighting factors')
-                ax.legend()
-                outputfile = f'weights_{process_key}_{key}.png'
-                outputfile = os.path.join(outputdir, outputfile)
-                fig.savefig(outputfile)
+    # apply the calibration for each score branch in turn, and cache the resulting histograms
+    # (the "before" histograms above are shared, since they do not depend on the branch)
+    hists_combined_after = {}
+    for branch, score_name in BRANCH_TO_SCORE_NAME.items():
+        print(f'Applying calibration for branch {branch} (score name "{score_name}")...')
 
-            # add weights to events
-            this_events['calibration_weight'] = calibration_weights
+        # apply calibration
+        for dtype in events_combined.keys():
+            if dtype != 'sim': continue
+            for process_key in events_combined[dtype].keys():
+                this_events = events_combined[dtype][process_key]
+                scores = this_events[branch]
+                scores_counts = ak.num(scores)
+                scores_flat = ak.flatten(scores)
+                calibration_weights = np.ones(len(this_events))
+                for key, val in calibration.items():
+                    #if key not in ['light', 'c']: continue # for testing
+                    # get bins and values
+                    bins = np.array(val[score_name]['bins'])
+                    values = np.array(val[score_name]['values'])
+                    if args.smooth_window is not None:
+                        if 'errors' not in val[score_name]:
+                            msg = 'Smoothing was requested, but no "errors" were found'
+                            msg += f' in the calibration file for region "{key}", variable "{score_name}";'
+                            msg += ' regenerate output.json with an updated calibration.py to enable smoothing.'
+                            raise Exception(msg)
+                        errors = np.array(val[score_name]['errors'])
+                        values = smooth_values(values, errors, args.smooth_window)
+                    # get per-jet values and aggregate to per-event values
+                    bin_ids = np.digitize(scores_flat, bins, right=True) - 1
+                    calibration_values_flat = values[bin_ids]
+                    calibration_values = ak.unflatten(calibration_values_flat, scores_counts)
+                    calibration_values_aggregated = np.prod(calibration_values, axis=1).to_numpy()
+                    #calibration_values_aggregated = calibration_values[:, 0].to_numpy() # alternative for testing
+                    #calibration_values_aggregated = calibration_values[:, 1].to_numpy() # alternative for testing
+                    calibration_values_aggregated = np.clip(calibration_values_aggregated, a_min=0.5, a_max=2) # for testing
+                    # make mask where to apply these
+                    mask_selection = splitdict[process_key][mapping[key]]
+                    mask = get_selection_mask(this_events, mask_selection)
+                    calibration_weights = np.where(mask, calibration_values_aggregated, calibration_weights)
 
-    # modify total weights to apply
-    weights = {
-      'qqb': ['weight', 'calibration_weight']
-    }
+                    # for debugging: make distributions of the applied weights
+                    weightsdir = os.path.join(args.outputdir, score_name, 'weights')
+                    if not os.path.exists(weightsdir): os.makedirs(weightsdir)
+                    weightbins = np.linspace(0, 3, num=51)
+                    fig, ax = plt.subplots()
+                    ax.hist(calibration_values_flat, bins=weightbins, density=True,
+                      histtype='step', color='blue', label='Per-jet reweighting factors')
+                    ax.hist(calibration_values_aggregated, bins=weightbins, density=True,
+                      histtype='step', color='purple', label='Per-event reweighting factors')
+                    ax.legend()
+                    weightsfile = os.path.join(weightsdir, f'weights_{process_key}_{key}.png')
+                    fig.savefig(weightsfile)
+                    plt.close(fig)
 
-    # make histograms after calibration
-    hists_combined_after = make_histograms(events_combined, variables,
-                             regions = regions,
-                             recalculate_regions = args.recalculate_regions,
-                             splitdict = splitdict,
-                             weights = weights)
+                # add weights to events
+                this_events['calibration_weight'] = calibration_weights
+
+        # modify total weights to apply
+        weights_after = {
+          'qqb': ['weight', 'calibration_weight']
+        }
+
+        # make and cache histograms after calibration for this branch
+        hists_combined_after[score_name] = make_histograms(events_combined, variables,
+                                 regions = regions,
+                                 recalculate_regions = args.recalculate_regions,
+                                 splitdict = splitdict,
+                                 weights = weights_after)
 
     # do some parsing after the loop above
     # (now that regions might have been recalculated,
@@ -349,7 +376,7 @@ if __name__=='__main__':
         lumiheaderparts.append('{:.1f}'.format(sqrts) + ' GeV')
     lumiheader = ', '.join(lumiheaderparts)
 
-    # plotting loop (histograms before calibration)
+    # plotting loop (histograms before calibration, shared across all score branches)
     outputdir = os.path.join(args.outputdir, 'before')
     if not os.path.exists(outputdir): os.makedirs(outputdir)
     plot_hists_default(hists_combined_before, variables, outputdir,
@@ -358,11 +385,12 @@ if __name__=='__main__':
       extracmstext=extracmstext, lumiheader=lumiheader,
       event_selection_name=event_selection_name, select_processes=select_processes)
 
-    # plotting loop (histograms after calibration)
-    outputdir = os.path.join(args.outputdir, 'after')
-    if not os.path.exists(outputdir): os.makedirs(outputdir)
-    plot_hists_default(hists_combined_after, variables, outputdir,
-      regions=regions, datatag=datatag,
-      shapes=args.shapes, normalizesim=args.normalizesim, dolog=args.dolog,
-      extracmstext=extracmstext, lumiheader=lumiheader,
-      event_selection_name=event_selection_name, select_processes=select_processes)
+    # plotting loop (histograms after calibration, one subdirectory per score branch)
+    for score_name in BRANCH_TO_SCORE_NAME.values():
+        outputdir = os.path.join(args.outputdir, score_name, 'after')
+        if not os.path.exists(outputdir): os.makedirs(outputdir)
+        plot_hists_default(hists_combined_after[score_name], variables, outputdir,
+          regions=regions, datatag=datatag,
+          shapes=args.shapes, normalizesim=args.normalizesim, dolog=args.dolog,
+          extracmstext=extracmstext, lumiheader=lumiheader,
+          event_selection_name=event_selection_name, select_processes=select_processes)
