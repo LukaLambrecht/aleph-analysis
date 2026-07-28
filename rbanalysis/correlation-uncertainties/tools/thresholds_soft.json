@@ -1,0 +1,11 @@
+{
+  "uds": [
+    {"branch": "Jets_score_isUDG", "min": 0.5}
+  ],
+  "c": [
+    {"branch": "Jets_score_isC", "min": 0.4}
+  ],
+  "b": [
+    {"branch": "Jets_score_isB", "min": 0.5}
+  ]
+}

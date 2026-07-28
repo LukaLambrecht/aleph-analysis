@@ -11,6 +11,7 @@
 
 import os
 import sys
+import shlex
 
 def makeUnique(fname):
     ### make a file name unique by appending a number to it,
@@ -133,6 +134,30 @@ def submitCommandAsCondorJob(name, command, **kwargs):
     ### submit a single command as a single job
     # command is a string representing a single command (executable + args)
     submitCommandsAsCondorJobs(name, [[command]], **kwargs)
+
+def submitScriptAsCondorJob(name, argv, env_script=None,
+        runmode_flag='--runmode', jobflavour='workday', **kwargs):
+    ### re-submit the currently running script as a single condor job
+    # meant to be called from within a script's own '--runmode condor' handling:
+    # this re-issues the exact same command line the script was called with
+    # (as given by argv, typically sys.argv), only switching the runmode flag's
+    # value from 'condor' to 'local', so that the submitted job actually executes
+    # the script instead of re-submitting itself again.
+    # note: the job runs with the working directory set to the current working
+    # directory at submission time (see initJobScript), so any relative paths
+    # in argv (e.g. to config/threshold files) resolve the same way as they would
+    # for a local run.
+    cmd_parts = list(argv)
+    cmd_parts[0] = os.path.abspath(cmd_parts[0])
+    for idx, part in enumerate(cmd_parts):
+        if part == runmode_flag and idx+1 < len(cmd_parts):
+            cmd_parts[idx+1] = 'local'
+        elif part.startswith(runmode_flag+'='):
+            cmd_parts[idx] = runmode_flag+'=local'
+    command = 'python3 ' + ' '.join(shlex.quote(part) for part in cmd_parts)
+    conda_activate = f'source {env_script}' if env_script is not None else None
+    submitCommandAsCondorJob(name, command,
+      jobflavour=jobflavour, conda_activate=conda_activate, **kwargs)
 
 def submitCommandsAsCondorCluster(name, commands,
                         stdout=None, stderr=None, log=None,

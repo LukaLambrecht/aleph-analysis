@@ -1,0 +1,21 @@
+{
+    "Q": [
+        "Jets_score_isB > 0.99"
+    ],
+    "S": [
+        "Jets_score_isB < 0.99",
+        "Jets_score_isB > 0.9"
+    ],
+    "L": [
+        "Jets_score_isB < 0.9",
+        "Jets_score_isB > 0.45"
+    ],
+    "C": [
+        "Jets_score_isB < 0.45",
+        "Jets_score_isC > 0.6"
+    ],
+    "X": [
+        "Jets_score_isB < 0.45",
+        "Jets_score_isC < 0.2"
+    ]
+}

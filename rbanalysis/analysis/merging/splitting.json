@@ -1,0 +1,7 @@
+{
+  "qqb": {
+    "uds": "(genEventType>=1) & (genEventType<=3)",
+    "c": "(genEventType==4)",
+    "b": "(genEventType==5)"
+  }
+}
