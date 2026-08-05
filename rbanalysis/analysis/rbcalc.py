@@ -164,6 +164,61 @@ def calculate_efficiencies(tags, cats, jet1_tag_idx, jet2_tag_idx, event_cat_idx
     return res
 
 
+def calculate_yields(cats, event_cat_idx, weights=None):
+    '''
+    Calculate the (optionally weighted) number of events in each category.
+    Unlike calculate_efficiencies' 'num_events' (a raw, unweighted event count, used
+    for MC-statistics-level printouts), this is meant for an actual expected/observed
+    yield: pass the per-event cross-section/luminosity weight (the 'weight' branch
+    added by analysis.plot.make_events for simulation) to get a number directly
+    comparable to the observed data yield.
+    Input arguments:
+    - cats: list of categories, as in calculate_efficiencies.
+    - event_cat_idx: numpy array of event category (index in cats).
+    - weights: optional per-event weights; defaults to unit weight per event
+      (appropriate for data, which has no cross-section weight).
+    Returns a dict {cat: yield} (sum of weights of events in that category).
+    '''
+    if weights is None: weights = np.ones(len(event_cat_idx))
+    yields = {}
+    for cat_idx, cat in enumerate(cats):
+        mask = (event_cat_idx == cat_idx)
+        yields[cat] = float(np.sum(weights[mask]))
+    return yields
+
+
+def make_value_unc_table(values, uncs, decimals=4):
+    '''
+    Combine a nested dict of central values {process: {key: value}} and a nested
+    dict of uncertainties {process: {key: unc}} (same structure, e.g. as returned
+    by calculate_efficiencies' 'jet_efficiency'/'jet_efficiency_unc' or
+    'correlations'/'correlations_unc') into a single pandas DataFrame for compact
+    printing, with each cell formatted as a single "value ± unc" string
+    (or just "value" if no finite uncertainty is available, e.g. for data).
+    '''
+    processes = list(values.keys())
+    keys = []
+    for process in processes:
+        for key in values[process].keys():
+            if key not in keys: keys.append(key)
+
+    table = {}
+    for process in processes:
+        column = {}
+        for key in keys:
+            if key not in values[process]:
+                column[key] = ''
+                continue
+            value = values[process][key]
+            unc = uncs.get(process, {}).get(key, np.nan)
+            if unc is None or (isinstance(unc, float) and np.isnan(unc)):
+                column[key] = f'{value:.{decimals}f}'
+            else:
+                column[key] = f'{value:.{decimals}f} ± {unc:.{decimals}f}'
+        table[process] = column
+    return pd.DataFrame(table)
+
+
 def load_and_tag_events(args, extra_branches=None):
     '''
     Read events for the Rb multi-tag analysis, apply jet-level tag thresholds,
@@ -409,6 +464,7 @@ if __name__=='__main__':
     correlations = {}
     jet_efficiency_unc = {}
     correlations_unc = {}
+    yields = {}
     for dtype in events_combined.keys():
         for process, events in events_combined[dtype].items():
 
@@ -424,33 +480,55 @@ if __name__=='__main__':
             correlations[process] = temp['correlations']
             jet_efficiency_unc[process] = temp['jet_efficiency_unc']
             correlations_unc[process] = temp['correlations_unc']
-            
+
+            # get the (luminosity-weighted, for simulation) yield per category;
+            # data has no 'weight' branch, so it falls back to a plain event count
+            if 'weight' in events.fields:
+                weights = events['weight'].to_numpy()
+            else:
+                if dtype=='sim':
+                    msg = f'WARNING: no "weight" branch found for simulated process'
+                    msg += f' "{process}" (did you provide --xsections and --year?);'
+                    msg += f' falling back to unweighted (raw MC event count) yields.'
+                    print(msg)
+                weights = None
+            yields[process] = calculate_yields(cats, eventcat, weights=weights)
+
     # printouts for testing
     print('Number of events:')
     df = pd.DataFrame(nevents); print(df)
     print('Per-event efficiency:')
     df = pd.DataFrame(event_efficiency); print(df)
-    print('Per-jet efficiency:')
-    df = pd.DataFrame(jet_efficiency); print(df)
-    print('Per-jet efficiency uncertainty:')
-    df = pd.DataFrame(jet_efficiency_unc); print(df)
-    print('Correlations:')
-    df = pd.DataFrame(correlations); print(df)
-    print('Correlations uncertainty:')
-    df = pd.DataFrame(correlations_unc); print(df)
+    print('Per-jet efficiency (value ± bootstrap uncertainty):')
+    df = make_value_unc_table(jet_efficiency, jet_efficiency_unc); print(df)
+    print('Correlations (value ± bootstrap uncertainty):')
+    df = make_value_unc_table(correlations, correlations_unc); print(df)
 
     # make output directory
-    outputdir = 'output'
+    outputdir = 'output_test'
     if not os.path.exists(outputdir): os.makedirs(outputdir)
 
-    # parse and write number of observed events
-    if 'data' in nevents.keys():
-        num_events = {}
-        for key, val in nevents['data'].items():
-            newkey = ''.join(key)
-            num_events[newkey] = val
-        with open(os.path.join(outputdir, 'observed.json'), 'w') as f:
-            json.dump(num_events, f, indent=2)
+    # parse and write observed data yields
+    if 'data' in yields.keys():
+        yields_data = {''.join(cat): val for cat, val in yields['data'].items()}
+        yields_data_file = os.path.join(outputdir, 'yields_data.json')
+        with open(yields_data_file, 'w') as f:
+            json.dump(yields_data, f, indent=2)
+        print(f'Wrote {yields_data_file}.')
+
+    # parse and write predicted simulation yields (summed over all simulated
+    # sub-processes, i.e. flavours, so directly comparable category-by-category
+    # to yields_data.json)
+    sim_processes = [p for p in yields.keys() if p!='data']
+    if len(sim_processes) > 0:
+        yields_sim = {}
+        for cat in yields[sim_processes[0]].keys():
+            total = sum(yields[p][cat] for p in sim_processes)
+            yields_sim[''.join(cat)] = total
+        yields_sim_file = os.path.join(outputdir, 'yields_sim.json')
+        with open(yields_sim_file, 'w') as f:
+            json.dump(yields_sim, f, indent=2)
+        print(f'Wrote {yields_sim_file}.')
 
     # parse and write other parameters
     params = []
@@ -467,8 +545,10 @@ if __name__=='__main__':
         for cat, corr in correlations[process].items():
             if cat[0]=='' or cat[1]=='': continue
             params.append({'name': f'corr_{cat[0]}_{cat[1]}_{process}', 'initial_value': corr})
-    with open(os.path.join(outputdir, 'params.json'), 'w') as f:
+    params_file = os.path.join(outputdir, 'params.json')
+    with open(params_file, 'w') as f:
         json.dump(params, f, indent=2)
+    print(f'Wrote {params_file}.')
 
     # parse and write statistical uncertainties
     mcstats = {}
@@ -484,5 +564,7 @@ if __name__=='__main__':
             if cat[0]=='' or cat[1]=='': continue
             name = f'corr_{cat[0]}_{cat[1]}_{process}'
             mcstats[name] = {name: [unc, unc]}
-    with open(os.path.join(outputdir, 'systematics_mcstats.json'), 'w') as f:
+    mcstats_file = os.path.join(outputdir, 'systematics_mcstats.json')
+    with open(mcstats_file, 'w') as f:
         json.dump(mcstats, f, indent=2)
+    print(f'Wrote {mcstats_file}.')
