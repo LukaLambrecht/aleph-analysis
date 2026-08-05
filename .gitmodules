@@ -1,0 +1,3 @@
+[submodule "rbanalysis/fittools"]
+	path = rbanalysis/fittools
+	url = https://github.com/LukaLambrecht/rbfit.git
