@@ -7,6 +7,6 @@
         "objectselection": [
             "selections/selection_jets.json"
         ],
-        "outputdir": "output_test/test"
+        "outputsubdir": "test"
     }
 }

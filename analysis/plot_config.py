@@ -20,6 +20,7 @@ if __name__=='__main__':
     parser.add_argument('-s', '--samples', required=True)
     parser.add_argument('-c', '--config', required=True, nargs='+')
     parser.add_argument('-k', '--keys', default=None, nargs='+')
+    parser.add_argument('-o', '--outputdir', default='output_test')
     parser.add_argument('-r', '--runmode', default='local', choices=['local', 'condor'])
     args = parser.parse_args()
 
@@ -51,7 +52,7 @@ if __name__=='__main__':
         'sim': samples.get('sim', None),
         'data': samples.get('data', None),
         'variables': ['variables/variables_event.json'],
-        'outputdir': 'output_test',
+        'outputdir': os.path.abspath(args.outputdir),
         'objectselection': ['selections/selection_jets.json'],
         'eventselection': 'selections/selection.json',
         'year': '1994',
@@ -64,8 +65,18 @@ if __name__=='__main__':
     # make commands based on config
     cmds = []
     for key, settings in config.items():
+        
+        # copy base args and update with settings from this config
         this_args = base_args.copy()
         this_args.update(settings)
+        
+        # special case: output directory
+        if 'outputsubdir' in this_args.keys():
+            topdir = this_args['outputdir']
+            subdir = this_args.pop('outputsubdir')
+            this_args['outputdir'] = os.path.join(topdir, subdir)
+        
+        # make command
         cmd = 'python plot.py'
         # loop over arguments
         for arg, val in this_args.items():

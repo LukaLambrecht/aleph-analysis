@@ -43,8 +43,8 @@ if __name__=='__main__':
     parser.add_argument('-d', '--data', default=None, nargs='+')
     parser.add_argument('-v', '--variables', required=True, nargs='+')
     parser.add_argument('-o', '--outputdir', required=True)
-    parser.add_argument('--objectselection', default=None)
-    parser.add_argument('--eventselection', default=None)
+    parser.add_argument('--objectselection', default=None, nargs='+')
+    parser.add_argument('--eventselection', default=None, nargs='+')
     parser.add_argument('--select_processes', default=[], nargs='+')
     parser.add_argument('--regions', default=None)
     parser.add_argument('--recalculate_regions', default=False, action='store_true')
@@ -84,11 +84,14 @@ if __name__=='__main__':
     # read extra object selection to apply
     objectselection = None
     if args.objectselection is not None:
-        objectselection = load_objectselection(args.objectselection)
-        print('Found following extra object selection to apply:')
-        print(objectselection[0])
-        print('(to the following branches):')
-        print(objectselection[1])
+        objectselection = []
+        for f in args.objectselection:
+            this_objectselection = load_objectselection(f)
+            objectselection.append(this_objectselection)
+            print('Found following extra object selection to apply:')
+            print(this_objectselection[0])
+            print('(to the following branches):')
+            print(this_objectselection[1])
 
     # read extra selection to apply
     event_selection_name = None
@@ -213,7 +216,8 @@ if __name__=='__main__':
                 branches_to_read += get_variable_names(selection_string)
     # add selection
     if objectselection is not None:
-        branches_to_read += get_variable_names(objectselection[0])
+        for this_objectselection in objectselection:
+            branches_to_read += get_variable_names(this_objectselection[0])
     if eventselection is not None:
         branches_to_read += get_variable_names(eventselection)
     # add variables to plot

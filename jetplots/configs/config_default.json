@@ -6,7 +6,7 @@
             "variables/variables_sv.json",
             "variables/variables_v0.json"
         ],
-        "outputdir": "output_test/general"
+        "outputsubdir": "general"
     },
     "charged": {
         "variables": [
@@ -16,7 +16,7 @@
         "objectselection": [
             "selections/selection_constituents_charged.json"
         ],
-        "outputdir": "output_test/charged"
+        "outputsubdir": "charged"
     },
     "v0": {
         "variables": [
@@ -25,7 +25,7 @@
         "objectselection": [
             "selections/selection_v0cand_cospointing.json"
         ],
-        "outputdir": "output_test/v0"
+        "outputsubdir": "v0"
     },
     "ks": {
         "variables": [
@@ -35,7 +35,7 @@
             "selections/selection_v0cand_cospointing.json",
             "selections/selection_v0cand_ksmass.json"
         ],
-        "outputdir": "output_test/ks"
+        "outputsubdir": "ks"
     },
     "la": {
         "variables": [
@@ -45,6 +45,6 @@
             "selections/selection_v0cand_cospointing.json",
             "selections/selection_v0cand_lamass.json"
         ],
-        "outputdir": "output_test/la"
+        "outputsubdir": "la"
     }
 }

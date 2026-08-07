@@ -10,7 +10,7 @@
         "objectselection": [
             "selections/selection_jets.json"
         ],
-        "outputdir": "output_test/general"
+        "outputsubdir": "general"
     },
     "impact_parameters": {
         "variables": [
@@ -20,7 +20,7 @@
             "selections/selection_jets.json",
             "selections/selection_constituents_charged.json"
         ],
-        "outputdir": "output_test/impact_parameters"
+        "outputsubdir": "impact_parameters"
     },
     "dedx": {
         "variables": [
@@ -31,7 +31,7 @@
             "selections/selection_jets.json",
             "selections/selection_constituents_dedx.json"
         ],
-        "outputdir": "output_test/dedx"
+        "outputsubdir": "dedx"
     },
     "dedx-nopreselection": {
         "variables": [
@@ -41,7 +41,7 @@
         "objectselection": [
             "selections/selection_jets.json"
         ],
-        "outputdir": "output_test/dedx-nopreselection"
+        "outputsubdir": "dedx-nopreselection"
     },
     "v0": {
         "variables": [
@@ -51,7 +51,7 @@
             "selections/selection_jets.json",
             "selections/selection_v0cand_cospointing.json"
         ],
-        "outputdir": "output_test/v0"
+        "outputsubdir": "v0"
     },
     "ks": {
         "variables": [
@@ -62,7 +62,7 @@
             "selections/selection_v0cand_cospointing.json",
             "selections/selection_v0cand_ksmass.json"
         ],
-        "outputdir": "output_test/ks"
+        "outputsubdir": "ks"
     },
     "la": {
         "variables": [
@@ -73,6 +73,6 @@
             "selections/selection_v0cand_cospointing.json",
             "selections/selection_v0cand_lamass.json"
         ],
-        "outputdir": "output_test/la"
+        "outputsubdir": "la"
     }
 }
