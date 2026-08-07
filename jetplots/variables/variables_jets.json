@@ -88,5 +88,23 @@
   "xlow": -0.5,
   "xhigh": 5.5,
   "nbins": 6
+},
+{
+  "name": "recojet_nkscandidates",
+  "variable": "recojet_nkscandidates",
+  "axtitle": "Number of $K^0_S$ candidates per jet (before selection)",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 5.5,
+  "nbins": 6
+},
+{
+  "name": "recojet_nlambdacandidates",
+  "variable": "recojet_nlambdacandidates",
+  "axtitle": "Number of $\\Lambda^0$ candidates per jet (before selection)",
+  "unit": "",
+  "xlow": -0.5,
+  "xhigh": 5.5,
+  "nbins": 6
 }
 ]
