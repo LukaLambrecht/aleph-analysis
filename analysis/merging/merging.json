@@ -1,8 +1,10 @@
 {
   "qqb": [
-    "output_qqb*"
+    "output_qqb*",
+    "QQB/chunk*"
   ],
   "data": [
-    "output_data*"
+    "output_data*",
+    "1994/chunk*"
   ]
 }

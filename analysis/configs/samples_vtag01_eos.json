@@ -1,0 +1,4 @@
+{
+    "sim": ["/eos/experiment/fcc/ee/analyses/case-studies/aleph/processedMC/1994/zqq/stage1/prefix/VTAG-01-tagged/*/QQB/*.root"],
+    "data": ["/eos/experiment/fcc/ee/analyses/case-studies/aleph/processedData/1994/stage1/prefix/VTAG-01-data/1994/*.root"]
+}

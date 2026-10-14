@@ -35,6 +35,9 @@ if __name__=='__main__':
     parser.add_argument('-t', '--treename', default=None)
     parser.add_argument('--translation', default=None)
     parser.add_argument('--objectselection', default=None)
+    parser.add_argument('--inference_batch_size', default=1000, type=int,
+      help='Number of jets per batch passed to the model; the memory usage grows with this number'
+          +' (about 1 GB for 100 jets and 10 GB for 1000 jets for a ParticleTransformer model).')
     args = parser.parse_args()
 
     # load the preprocess dict
@@ -124,7 +127,7 @@ if __name__=='__main__':
                 scores = infer_events(events[key], args.model, prepdict,
                             translation=translation,
                             do_add_variables=False,
-                            batch_size=1000)
+                            batch_size=args.inference_batch_size)
                 batch_scores.append(scores)
 
             # concatenate batches

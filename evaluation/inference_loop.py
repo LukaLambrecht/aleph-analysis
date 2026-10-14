@@ -14,18 +14,31 @@ import tools.slurmtools as st
 if __name__=='__main__':
 
     # settings
-    modeltag = '20260305_withnewks_withdedx_masked_standardized'
-    ntupletag = 'withnewks'
-    model = os.path.abspath(f'models/output_{modeltag}/model.onnx')
+    #modeltag = '20260305_withnewks_withdedx_masked_standardized'
+    #ntupletag = 'withnewks'
+    #model = os.path.abspath(f'models/output_{modeltag}/model.onnx')
+    #preprocess = model.replace('model.onnx', 'preprocess.json')
+    #outputdir = f'/eos/user/l/llambrec/aleph-data/model_output_scores/output_scores_model_{modeltag}'
+    #ntuplename = f'ntuples-{ntupletag}' if ntupletag is not None else 'ntuples'
+    #files = [
+    #  f'/eos/user/l/llambrec/aleph-data/{ntuplename}/eventlevel/mc/output_qqb_*.root',
+    #  f'/eos/user/l/llambrec/aleph-data/{ntuplename}/eventlevel/data/output_data_*.root',
+    #]
+    #translation = 'translations/translations.json'
+    # settings for the models trained on the vtag01 ntuples,
+    # applied on the vtag01 version of the data and of the official ALEPH simulation
+    # (the vtag01 ntuples are translated to our naming convention while reading, see tools/schematools.py)
+    modeltag = '20261013_vtag01_nepochs_480'
+    model = '/eos/user/l/llambrec/aleph-weaver-output/output_test_20261013_vtag01_nepochs_480_nsteps_300_batch_1024/model.onnx'
     preprocess = model.replace('model.onnx', 'preprocess.json')
     outputdir = f'/eos/user/l/llambrec/aleph-data/model_output_scores/output_scores_model_{modeltag}'
+    files = [
+      '/eos/experiment/fcc/ee/analyses/case-studies/aleph/processedMC/1994/zqq/stage1/prefix/VTAG-01-tagged/*/QQB/*.root',
+      '/eos/experiment/fcc/ee/analyses/case-studies/aleph/processedData/1994/stage1/prefix/VTAG-01-data/1994/*.root',
+    ]
+    translation = 'translations/translations_vtag01.json'
     runmode = 'condor'
     resubmit = True
-    ntuplename = f'ntuples-{ntupletag}' if ntupletag is not None else 'ntuples'
-    files = [
-      f'/eos/user/l/llambrec/aleph-data/{ntuplename}/eventlevel/mc/output_qqb_*.root',
-      f'/eos/user/l/llambrec/aleph-data/{ntuplename}/eventlevel/data/output_data_*.root',
-    ]
 
     # set test mode
     test = False
@@ -54,6 +67,12 @@ if __name__=='__main__':
         go = six.moves.input()
         if go!='y': sys.exit()
 
+    # check number of files to (re)submit
+    if len(inputfiles)==0:
+        msg = 'Found 0 input files, exiting...'
+        print(msg)
+        sys.exit()
+
     # loop over input files
     cmds = []
     for f in inputfiles:
@@ -75,7 +94,9 @@ if __name__=='__main__':
         cmd += f' -o {outputdir}'
         cmd += ' -t events'
         if objectselection is not None: cmd += f' --objectselection {objectselection}'
-        cmd += f' --translation translations/translations.json'
+        cmd += f' --translation {translation}'
+        # (limit the memory usage of the model inference to about 1 GB)
+        cmd += ' --inference_batch_size 100'
         cmds.append(cmd)
 
     # test mode

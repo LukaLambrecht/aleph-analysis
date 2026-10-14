@@ -116,20 +116,33 @@ def merge_events(events, mergedict, verbose=False):
     return merged_events
 
 def merge_sampledict(sampledict, mergedict, verbose=False):
+    ### merge samples according to a merging dict of the form {<merged name>: [<patterns>], ...}
+    # patterns without a "/" are matched against the sample names (i.e. the keys of sampledict);
+    # patterns with a "/" are matched against the end of the file paths instead,
+    # e.g. "QQB/chunk*" matches all files called chunk*.root in a directory called QQB
+    # (useful when files from different samples have the same name, and hence the same sample name).
+    def matches(sample_name, filename, pattern):
+        if '/' in pattern: return fnmatch(filename, '*/' + pattern.lstrip('/'))
+        return fnmatch(sample_name, pattern)
     merged_sampledict = {}
-    all_mkeys = []
+    merged_files = set()
     for key, val in mergedict.items():
         mkeys = []
-        for pattern in val: mkeys += [k for k in sampledict.keys() if fnmatch(k, pattern)]
-        mkeys = list(set(mkeys))
-        if len(mkeys)==0: continue
-        all_mkeys += mkeys
+        mfiles = []
+        for skey, sfiles in sampledict.items():
+            for sfile in sfiles:
+                if any(matches(skey, sfile, pattern) for pattern in val):
+                    mfiles.append(sfile)
+                    if skey not in mkeys: mkeys.append(skey)
+        if len(mfiles)==0: continue
+        merged_files.update(mfiles)
         if verbose: print(f'  - Creating merged sample {key} from original samples {mkeys}')
-        merged_sampledict[key] = [f for mkey in mkeys for f in sampledict[mkey]]
-    for key in sampledict.keys():
-        if key not in all_mkeys:
+        merged_sampledict[key] = mfiles
+    for key, files in sampledict.items():
+        remaining = [f for f in files if f not in merged_files]
+        if len(remaining) > 0:
             if verbose: print(f'  - Keeping sample {key} without merging')
-            merged_sampledict[key] = sampledict[key]
+            merged_sampledict[key] = remaining
     return merged_sampledict
 
 def make_batches(orig_list, batch_size=None):

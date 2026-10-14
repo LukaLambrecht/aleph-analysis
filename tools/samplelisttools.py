@@ -5,6 +5,10 @@ import json
 import uproot
 import awkward as ak
 
+thisdir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(thisdir)
+from schematools import detect_schema, get_branches_to_read, translate_events
+
 
 def find_files(samplelist, verbose=True):
     '''
@@ -105,6 +109,25 @@ def read_sampledict(sampledict, treename=None, branches=None,
             # open file and read requested branches
             if treename is not None: filename += f':{treename}'
             f = uproot.open(filename)
+            # check if the file uses a different naming scheme
+            # (if so, read the corresponding branches and translate them to our naming scheme,
+            #  see tools/schematools.py)
+            (schema_name, schema) = detect_schema(f.keys())
+            if schema is not None:
+                (to_read, expressions) = get_branches_to_read(branches, schema, f.keys())
+                if branches is not None:
+                    for branch in branches:
+                        if not branch in expressions:
+                            msg = 'WARNING in tools.samplelisttools.read_sampledict:'
+                            msg += f' branch {branch} not found in {filename}'
+                            msg += f' (translated with naming scheme {schema_name});'
+                            msg += ' will skip reading this branch.'
+                            print(msg)
+                part = f.arrays(to_read, entry_start=entry_start, entry_stop=entry_stop,
+                        library='ak')
+                part = translate_events(part, expressions)
+                events.append(part)
+                continue
             valid_branches = None
             if branches is not None:
                 valid_branches = branches[:]
@@ -176,6 +199,10 @@ def read_branchnames(sampledict, treename=None, verbose=True):
             if treename is not None: filename += f':{treename}'
             f = uproot.open(filename)
             thisbranchnames = f.keys()
+            # translate to our naming scheme if needed (see tools/schematools.py)
+            (_, schema) = detect_schema(thisbranchnames)
+            if schema is not None:
+                thisbranchnames = sorted(get_branches_to_read(None, schema, thisbranchnames)[1].keys())
             if branchnames is None:
                 branchnames = thisbranchnames
                 bset = set(branchnames)

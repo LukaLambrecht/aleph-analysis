@@ -1,0 +1,75 @@
+{
+  "description": "Event-level ntuples of the VTAG-01 production (e.g. processedMC/1994/zqq/stage1/VTAG-01 and processedData/1994/stage1/prefix/VTAG-01-data), translated to the naming convention of our own event-level ntuples.",
+
+  "detect": ["pfcand_pt", "jet_pT", "event_class"],
+
+  "prefixes": {
+    "JetsConstituents_": "pfcand_",
+    "SecondaryVertices_": "sv_",
+    "V0Candidates_": "v0_"
+  },
+
+  "branches": {
+    "runNumber": "run_number",
+    "eventNumber": "event_number",
+    "genEventType": "ak.values_astype(jetPID, 'int32')",
+    "recoEventType": "event_class",
+
+    "Event_njets": "event_njet",
+    "Event_mass": "event_invariant_mass",
+    "Event_Bz": "Bz_run",
+    "Event_dmerge2": "JetClustering_d23**2",
+    "Event_dmerge3": "JetClustering_d34**2",
+    "Event_nTracks": "n_tracks_all",
+    "Event_nSelectedTracks": "n_tracks_sel",
+    "Event_nPrimaryTracks": "n_primary_tracks",
+    "Event_nSecondaryTracks": "n_secondary_tracks",
+    "Event_nSV": "n_sv_event",
+    "Event_nV0Candidates": "n_v0_event",
+    "GenPV_x": "gen_vertex_x",
+    "GenPV_y": "gen_vertex_y",
+    "GenPV_z": "gen_vertex_z",
+
+    "Jets_e": "jet_e",
+    "Jets_mass": "jet_mass",
+    "Jets_pt": "jet_pT",
+    "Jets_px": "jet_pT * np.cos(jet_phi)",
+    "Jets_py": "jet_pT * np.sin(jet_phi)",
+    "Jets_pz": "jet_p * np.cos(jet_theta)",
+    "Jets_phi": "np.mod(jet_phi, 2*np.pi)",
+    "Jets_eta": "jet_eta",
+    "Jets_theta": "jet_theta",
+    "Jets_nConstituents": "jet_nconst",
+    "Jets_nSV": "n_sv_jets",
+    "Jets_nV0Candidates": "n_v0_jets",
+    "Jets_nKsCandidates": "n_v0_ks",
+    "Jets_nLambdaCandidates": "n_v0_lambda",
+    "Jets_nMu": "jet_nmu",
+    "Jets_nEl": "jet_nel",
+    "Jets_nChargedHad": "jet_nchad",
+    "Jets_nPhoton": "jet_ngamma",
+    "Jets_nNeutralHad": "jet_nnhad",
+
+    "JetsConstituents_Sip2dVal": "pfcand_btagSip2dVal",
+    "JetsConstituents_Sip2dSig": "pfcand_btagSip2dSig",
+    "JetsConstituents_Sip3dVal": "pfcand_btagSip3dVal",
+    "JetsConstituents_Sip3dSig": "pfcand_btagSip3dSig",
+    "JetsConstituents_JetDistVal": "pfcand_btagJetDistVal",
+    "JetsConstituents_JetDistSig": "pfcand_btagJetDistSig",
+    "JetsConstituents_trackChi2Normalized": "pfcand_trackChi2Norm",
+
+    "SecondaryVertices_chi2Normalized": "sv_chi2_norm",
+    "SecondaryVertices_nTracks": "sv_ntracks",
+    "SecondaryVertices_xrel": "sv_dx",
+    "SecondaryVertices_yrel": "sv_dy",
+    "SecondaryVertices_zrel": "sv_dz",
+
+    "V0Candidates_mass": "v0_invM",
+    "V0Candidates_pdgId": "v0_pdg",
+    "V0Candidates_chi2Normalized": "v0_chi2_norm",
+    "V0Candidates_nTracks": "v0_ntracks",
+    "V0Candidates_xrel": "v0_dx",
+    "V0Candidates_yrel": "v0_dy",
+    "V0Candidates_zrel": "v0_dz"
+  }
+}
