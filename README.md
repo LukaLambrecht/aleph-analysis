@@ -31,6 +31,10 @@ This may take a long time to run, but needs to be done only once.
 If that ran correctly, activate the environment with `conda activate aleph_analysis_env`.
 For exiting the environment, run `conda deactivate`.
 
+Alternatively, you can use `setup_oscar.sh`.
+It uses and LCG view from `/cvmfs/sft.cern.ch` instead of the `key4hep` from `/cvmfs/sw.hsf.org`.
+It should contain all required packages, but perhaps in different versions from `key4hep`.
+
 **On BRUX** (experimental):
 The standard setup as on `lxplus` seems not to work, even though `/cvmfs` is available.
 Not yet sure why or how, but it seems to work with a little hack to the setup script;
