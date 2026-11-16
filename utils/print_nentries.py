@@ -1,5 +1,5 @@
 # Print the number of entries in a tree for each of the provided files, and the total.
-# Usage: python print_nentries.py <file(s)> [-t <treename>]
+# Usage: python print_nentries.py -i <file(s)> [-t <treename>]
 # If no tree name is given, the first TTree (or RNTuple) found in each file is used.
 
 
@@ -17,6 +17,7 @@ if __name__=='__main__':
     total = 0
     for inputfile in args.inputfiles:
         with uproot.open(inputfile) as f:
+            print(f.keys())
             treename = args.treename
             if treename is None:
                 treename = f.keys(filter_classname=['TTree', 'ROOT::RNTuple'], cycle=False)[0]
