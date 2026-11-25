@@ -4,6 +4,7 @@ import glob
 import json
 import uproot
 import awkward as ak
+from concurrent.futures import ThreadPoolExecutor
 
 thisdir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(thisdir)
@@ -89,8 +90,46 @@ def find_files(samplelist, verbose=True):
     return sampledict
 
 
+def _read_file(filename, treename=None, branches=None, entry_start=None, entry_stop=None):
+    ### read the requested branches from a single file
+    # open file and read requested branches
+    if treename is not None: filename += f':{treename}'
+    f = uproot.open(filename)
+    keys = f.keys()
+    # check if the file uses a different naming scheme
+    # (if so, read the corresponding branches and translate them to our naming scheme,
+    #  see tools/schematools.py)
+    (schema_name, schema) = detect_schema(keys)
+    if schema is not None:
+        (to_read, expressions) = get_branches_to_read(branches, schema, keys)
+        if branches is not None:
+            for branch in branches:
+                if not branch in expressions:
+                    msg = 'WARNING in tools.samplelisttools.read_sampledict:'
+                    msg += f' branch {branch} not found in {filename}'
+                    msg += f' (translated with naming scheme {schema_name});'
+                    msg += ' will skip reading this branch.'
+                    print(msg)
+        part = f.arrays(to_read, entry_start=entry_start, entry_stop=entry_stop,
+                library='ak')
+        return translate_events(part, expressions)
+    valid_branches = None
+    if branches is not None:
+        keyset = set(keys)
+        valid_branches = branches[:]
+        for branch in branches:
+            if not branch in keyset:
+                valid_branches.remove(branch)
+                msg = 'WARNING in tools.samplelisttools.read_sampledict:'
+                msg += f' branch {branch} not found in {filename};'
+                msg += ' will skip reading this branch.'
+                print(msg)
+    return f.arrays(valid_branches, entry_start=entry_start, entry_stop=entry_stop,
+            library='ak')
+
+
 def read_sampledict(sampledict, treename=None, branches=None,
-        entry_start=None, entry_stop=None, verbose=True):
+        entry_start=None, entry_stop=None, verbose=True, num_threads=4):
     
     # initializations
     event_dict = {}
@@ -101,47 +140,19 @@ def read_sampledict(sampledict, treename=None, branches=None,
         entry_stop = int(entry_stop)
         if entry_stop < 0: entry_stop = None
     
-    # loop over samples
+    # read the files of each sample
+    # (in parallel threads, since reading is mostly waiting for I/O, e.g. on EOS;
+    #  the order of the files is kept, so the result does not depend on num_threads)
     for tag, files in sampledict.items():
-        events = []
-        # loop over files
-        for filename in files:
-            # open file and read requested branches
-            if treename is not None: filename += f':{treename}'
-            f = uproot.open(filename)
-            # check if the file uses a different naming scheme
-            # (if so, read the corresponding branches and translate them to our naming scheme,
-            #  see tools/schematools.py)
-            (schema_name, schema) = detect_schema(f.keys())
-            if schema is not None:
-                (to_read, expressions) = get_branches_to_read(branches, schema, f.keys())
-                if branches is not None:
-                    for branch in branches:
-                        if not branch in expressions:
-                            msg = 'WARNING in tools.samplelisttools.read_sampledict:'
-                            msg += f' branch {branch} not found in {filename}'
-                            msg += f' (translated with naming scheme {schema_name});'
-                            msg += ' will skip reading this branch.'
-                            print(msg)
-                part = f.arrays(to_read, entry_start=entry_start, entry_stop=entry_stop,
-                        library='ak')
-                part = translate_events(part, expressions)
-                events.append(part)
-                continue
-            valid_branches = None
-            if branches is not None:
-                valid_branches = branches[:]
-                for branch in branches:
-                    if not branch in f.keys():
-                        valid_branches.remove(branch)
-                        msg = 'WARNING in tools.samplelisttools.read_sampledict:'
-                        msg += f' branch {branch} not found in {filename};'
-                        msg += ' will skip reading this branch.'
-                        print(msg)
-            part = f.arrays(valid_branches, entry_start=entry_start, entry_stop=entry_stop,
-                    library='ak')
-            events.append(part)
-        
+        def read(filename):
+            return _read_file(filename, treename=treename, branches=branches,
+                     entry_start=entry_start, entry_stop=entry_stop)
+        if num_threads is None or num_threads <= 1 or len(files) <= 1:
+            events = [read(filename) for filename in files]
+        else:
+            with ThreadPoolExecutor(max_workers=min(num_threads, len(files))) as executor:
+                events = list(executor.map(read, files))
+
         # merge events for all files per sample
         events = ak.concatenate(events)
         event_dict[tag] = events
