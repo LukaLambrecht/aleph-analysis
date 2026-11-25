@@ -53,6 +53,7 @@ def make_histograms(datastruct, variables,
         regions = None,
         recalculate_regions = False,
         external_variables = None,
+        derived_variables = None,
         splitdict = None,
         weights = None,
         weight_variations = None,
@@ -65,6 +66,12 @@ def make_histograms(datastruct, variables,
       with each sampledict of the form {process name: data},
       with data either a list of files to read, or an awkward array of already loaded events.
     - variables: list of variables to produce histograms for
+    - derived_variables: optional dict of the form {branch name: function},
+      where each function takes the events (awkward array) and returns a new branch,
+      which is added to the events right after reading (i.e. before any selection).
+      A function may also return a dict of the form {branch name: array} to add several branches
+      (in that case the key in derived_variables is only used as a label).
+      Functions are applied in order, so later ones can use branches added by earlier ones.
     Returns:
     - dictionary with the following structure:
       dtype -> region_variable_key -> process_key -> systematic_key -> (counts, errors)
@@ -164,6 +171,13 @@ def make_histograms(datastruct, variables,
                     # add to events
                     for key, val in external_vars.items():
                         events[process_key][key] = val
+
+                # calculate derived variables
+                if derived_variables is not None:
+                    for key, func in derived_variables.items():
+                        result = func(events[process_key])
+                        if not isinstance(result, dict): result = {key: result}
+                        for name, values in result.items(): events[process_key][name] = values
 
                 # store number of events before any selection (for normalization later)
                 nevents = {process_key: len(events[process_key])}
@@ -480,7 +494,7 @@ def plot_hists_default(hists_combined, variables, outputdir,
       colordict=None, labeldict=None, styledict=None, stacklist=None,
       shapes=False, normalizesim=False, dolog=False,
       extracmstext=None, lumiheader=None, event_selection_name=None, select_processes=None,
-      region_labeldict=None):
+      region_labeldict=None, axtitlesize=22):
     '''
     Default plotting loop
     '''
@@ -602,7 +616,8 @@ def plot_hists_default(hists_combined, variables, outputdir,
                        yaxtitle=yaxtitle,
                        dolegend=False,
                        ratios=ratios,
-                       ratio_yaxtitles=ratio_yaxtitles)
+                       ratio_yaxtitles=ratio_yaxtitles,
+                       axtitlesize=axtitlesize)
 
             # some more plot aesthetics
             axs[0].set_ylim((0, axs[0].get_ylim()[1]*1.4))
@@ -668,7 +683,8 @@ def plot_hists_default(hists_combined, variables, outputdir,
                        yaxtitle=yaxtitle,
                        dolegend=False,
                        ratios=ratios,
-                       ratio_yaxtitles=ratio_yaxtitles)
+                       ratio_yaxtitles=ratio_yaxtitles,
+                       axtitlesize=axtitlesize)
 
                 # some more plot aesthetics
                 if np.any(histarray > 0):

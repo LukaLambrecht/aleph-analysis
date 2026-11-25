@@ -1,0 +1,722 @@
+[
+  {
+    "name": "lundkt0_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt0p5_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.5)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundkt1_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundz0p1_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_z > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lundzemit0p1_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_zemit > 0.1)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lnkt_incl_E5-10",
+    "variable": "JetsSplittings_lnKt[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_incl_E10-15",
+    "variable": "JetsSplittings_lnKt[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_incl_E15-20",
+    "variable": "JetsSplittings_lnKt[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_incl_E20-30",
+    "variable": "JetsSplittings_lnKt[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_incl_E30-50",
+    "variable": "JetsSplittings_lnKt[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_btag_E5-10",
+    "variable": "JetsSplittings_lnKt[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_btag_E10-15",
+    "variable": "JetsSplittings_lnKt[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_btag_E15-20",
+    "variable": "JetsSplittings_lnKt[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_btag_E20-30",
+    "variable": "JetsSplittings_lnKt[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_btag_E30-50",
+    "variable": "JetsSplittings_lnKt[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_lighttag_E5-10",
+    "variable": "JetsSplittings_lnKt[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_lighttag_E10-15",
+    "variable": "JetsSplittings_lnKt[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_lighttag_E15-20",
+    "variable": "JetsSplittings_lnKt[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_lighttag_E20-30",
+    "variable": "JetsSplittings_lnKt[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  },
+  {
+    "name": "lnkt_lighttag_E30-50",
+    "variable": "JetsSplittings_lnKt[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50))]",
+    "axtitle": "$\\ln(k_T/\\mathrm{GeV})$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 32,
+    "xlow": -5.0,
+    "xhigh": 3.0
+  }
+]

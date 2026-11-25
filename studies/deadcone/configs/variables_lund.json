@@ -1,0 +1,284 @@
+[
+  {
+    "name": "lund_incl_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_incl_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_incl_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_incl_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_incl_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_btag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_btag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_btag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_btag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_btag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherBTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_lighttag_E5-10",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (5 $<E_{rad}<$ 10 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_lighttag_E10-15",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (10 $<E_{rad}<$ 15 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_lighttag_E15-20",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (15 $<E_{rad}<$ 20 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_lighttag_E20-30",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (20 $<E_{rad}<$ 30 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "lund_lighttag_E30-50",
+    "variable": "JetsSplittings_lnInvTheta[(Jets_otherLightTagged) & ((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50)) & (JetsSplittings_kt > 0.2)]",
+    "axtitle": "$\\ln(1/\\theta)$ (30 $<E_{rad}<$ 50 GeV)",
+    "nbins": 24,
+    "xlow": -0.5,
+    "xhigh": 5.5
+  },
+  {
+    "name": "nrad_incl_E5-10",
+    "variable": "Jets_e[(ak.any((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_incl_E10-15",
+    "variable": "Jets_e[(ak.any((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_incl_E15-20",
+    "variable": "Jets_e[(ak.any((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_incl_E20-30",
+    "variable": "Jets_e[(ak.any((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_incl_E30-50",
+    "variable": "Jets_e[(ak.any((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_btag_E5-10",
+    "variable": "Jets_e[(Jets_otherBTagged) & (ak.any((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_btag_E10-15",
+    "variable": "Jets_e[(Jets_otherBTagged) & (ak.any((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_btag_E15-20",
+    "variable": "Jets_e[(Jets_otherBTagged) & (ak.any((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_btag_E20-30",
+    "variable": "Jets_e[(Jets_otherBTagged) & (ak.any((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_btag_E30-50",
+    "variable": "Jets_e[(Jets_otherBTagged) & (ak.any((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_lighttag_E5-10",
+    "variable": "Jets_e[(Jets_otherLightTagged) & (ak.any((JetsSplittings_erad >= 5) & (JetsSplittings_erad < 10), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_lighttag_E10-15",
+    "variable": "Jets_e[(Jets_otherLightTagged) & (ak.any((JetsSplittings_erad >= 10) & (JetsSplittings_erad < 15), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_lighttag_E15-20",
+    "variable": "Jets_e[(Jets_otherLightTagged) & (ak.any((JetsSplittings_erad >= 15) & (JetsSplittings_erad < 20), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_lighttag_E20-30",
+    "variable": "Jets_e[(Jets_otherLightTagged) & (ak.any((JetsSplittings_erad >= 20) & (JetsSplittings_erad < 30), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "nrad_lighttag_E30-50",
+    "variable": "Jets_e[(Jets_otherLightTagged) & (ak.any((JetsSplittings_erad >= 30) & (JetsSplittings_erad < 50), axis=-1))]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "njets_incl",
+    "variable": "Jets_e",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "njets_btag",
+    "variable": "Jets_e[(Jets_otherBTagged)]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "njets_lighttag",
+    "variable": "Jets_e[(Jets_otherLightTagged)]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  }
+]

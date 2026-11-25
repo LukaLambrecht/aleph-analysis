@@ -1,0 +1,8 @@
+{
+  "sqrts": 91.2,
+  "displaced": "(np.abs(JetsConstituents_charge) > 0) & (JetsConstituents_Sip2dSig > 3) & (np.abs(JetsConstituents_JetDistVal) < 0.07)",
+  "btag": "Jets_nDisplaced >= 3",
+  "lighttag": "Jets_nDisplaced == 0",
+  "lund_constituents": "np.abs(JetsConstituents_charge) > 0",
+  "lund_merge_displaced": true
+}

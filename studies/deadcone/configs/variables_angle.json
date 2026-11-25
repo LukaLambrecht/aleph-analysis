@@ -1,0 +1,11 @@
+[
+{
+  "name": "angleToJet",
+  "variable": "JetsConstituents_angleToJet",
+  "axtitle": "Particle angle to jet axis",
+  "unit": "rad",
+  "xlow": 0,
+  "xhigh": 1.5,
+  "nbins": 75
+}
+]

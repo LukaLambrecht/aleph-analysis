@@ -32,7 +32,8 @@ def plot(sig=None, bkg=None, data=None,
          docms=True, extracmstext=None, lumiheader=None,
          yaxtitle=None, dolegend=False,
          secondary_bin_label_height=0.7,
-         ratios=None, ratio_yaxtitles=None):
+         ratios=None, ratio_yaxtitles=None,
+         axtitlesize=22):
     '''
     Make prediction vs data histogram plot
     Input arguments:
@@ -47,6 +48,7 @@ def plot(sig=None, bkg=None, data=None,
               should be of the following form:
               [ [numerator, denominator], [...] ]
               a separate ratio pad will be made for each numerator/denominator combo.
+    - axtitlesize: font size of the x- and y-axis titles (including ratio pads).
     '''
 
     # concatenate dicts of sig and bkg histograms
@@ -376,10 +378,10 @@ def plot(sig=None, bkg=None, data=None,
         if xaxtitle is not None and len(xaxtitle)>0:
             if unit is not None and len(unit)>0:
                 xaxtitle += f' [{unit}]'
-            ax.set_xlabel(xaxtitle, fontsize=22)
+            ax.set_xlabel(xaxtitle, fontsize=axtitlesize)
     
     # set y-axis title
-    if yaxtitle is not None: ax.set_ylabel(yaxtitle, fontsize=22)
+    if yaxtitle is not None: ax.set_ylabel(yaxtitle, fontsize=axtitlesize)
     
     # make legend
     if dolegend:
@@ -524,7 +526,7 @@ def plot(sig=None, bkg=None, data=None,
             # some plot aesthetics
             ax.set_ylim((0.5, 1.5))
             ax.tick_params(axis='both', which='both', labelsize=15)
-            if yaxtitle is not None: ax.set_ylabel(yaxtitle, fontsize=22)
+            if yaxtitle is not None: ax.set_ylabel(yaxtitle, fontsize=axtitlesize)
             ax.axhline(y=1, color='grey', linestyle='dashed')
 
             # some plot aesthetics: remove the title and labels
@@ -534,7 +536,7 @@ def plot(sig=None, bkg=None, data=None,
 
         # add title and labels to the lowest pad
         if xaxtitle is not None and len(xaxtitle)>0:
-            axs[-1].set_xlabel(xaxtitle, fontsize=22)
+            axs[-1].set_xlabel(xaxtitle, fontsize=axtitlesize)
         if isinstance(variable, DoubleHistogramVariable):
             axs[-1].set_xticks(xtick_pos, labels=xtick_labels)
 

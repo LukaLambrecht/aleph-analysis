@@ -1,0 +1,77 @@
+[
+  {
+    "name": "xi_incl_charged",
+    "variable": "JetsConstituents_xi[((np.abs(JetsConstituents_charge) > 0))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_incl_prompt",
+    "variable": "JetsConstituents_xi[((np.abs(JetsConstituents_charge) > 0) & (~JetsConstituents_isDisplaced))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_btag_charged",
+    "variable": "JetsConstituents_xi[(Jets_otherBTagged) & ((np.abs(JetsConstituents_charge) > 0))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_btag_prompt",
+    "variable": "JetsConstituents_xi[(Jets_otherBTagged) & ((np.abs(JetsConstituents_charge) > 0) & (~JetsConstituents_isDisplaced))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_lighttag_charged",
+    "variable": "JetsConstituents_xi[(Jets_otherLightTagged) & ((np.abs(JetsConstituents_charge) > 0))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_lighttag_prompt",
+    "variable": "JetsConstituents_xi[(Jets_otherLightTagged) & ((np.abs(JetsConstituents_charge) > 0) & (~JetsConstituents_isDisplaced))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "njets_incl",
+    "variable": "Jets_e",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "njets_btag",
+    "variable": "Jets_e[(Jets_otherBTagged)]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  },
+  {
+    "name": "njets_lighttag",
+    "variable": "Jets_e[(Jets_otherLightTagged)]",
+    "axtitle": "Jet energy (counter)",
+    "unit": "GeV",
+    "nbins": 1,
+    "xlow": 0,
+    "xhigh": 1000
+  }
+]

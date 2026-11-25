@@ -1,0 +1,6 @@
+{
+  "selection": [
+    "np.abs(JetsConstituents_charge) > 0"
+  ],
+  "application": ["JetsConstituents_*"]
+}
