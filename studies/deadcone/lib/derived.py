@@ -13,6 +13,8 @@
 #   - btag / lighttag: jet-level expressions defining b-tagged and light-tagged jets.
 #     They can use any jet-level branch, including external variables (e.g. classifier scores)
 #     and Jets_nDisplaced (number of displaced constituents in the jet).
+#   - bdecay_truth: expression selecting constituents from B hadron decays (truth flag, simulation only),
+#     used for the simulation template of the B decay products (see lib/bsubtraction.py).
 #   - lund_constituents: expression selecting the constituents used in the declustering.
 #   - lund_merge_displaced: if true, the displaced constituents of each jet are merged
 #     into one pseudo-particle (heavy-hadron proxy) before reclustering,
@@ -72,6 +74,11 @@ def jet_tags(events, settings):
     return res
 
 
+def bdecay_truth(events, settings):
+    ### constituents from B hadron decays according to the truth flag (only meaningful in simulation)
+    return {'JetsConstituents_isFromBDecay': ak.values_astype(eval_expression(events, settings['bdecay_truth']), bool)}
+
+
 def lund_splittings(events, settings):
     ### iterative declustering of each jet (see lib/lund.py)
     use = ak.values_astype(eval_expression(events, settings['lund_constituents']), bool)
@@ -104,6 +111,7 @@ GROUPS = {
                         'Jets_isBTagged', 'Jets_isLightTagged',
                         'Jets_otherBTagged', 'Jets_otherLightTagged'],
              ['Jets_px', '@displaced', '@btag', '@lighttag']),
+    'bdecay': (bdecay_truth, ['JetsConstituents_isFromBDecay'], ['@bdecay_truth']),
     'lund': (lund_splittings, [f'JetsSplittings_{f}' for f in SPLITTING_FIELDS] + ['JetsSplittings_lnInvTheta', 'JetsSplittings_lnKt'],
              MOMENTUM + ['JetsConstituents_e', '@lund_constituents']),
 }

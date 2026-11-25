@@ -22,6 +22,32 @@ from analysis.eventselection import get_selection_mask
 # local version of mplhep
 import plotting.mplhep as mplhep
 
+def add_header(ax, docms=True, extracmstext=None, lumiheader=None, fontsize=20, logscale=False):
+    ### add the ALEPH label (with optional extra text) above the upper left corner of an axis
+    ### and a luminosity header (e.g. year, luminosity and centre-of-mass energy) above the upper right corner
+    if docms:
+        cmstext = r'$\bf{ALEPH}$'
+        if extracmstext is not None:
+            for part in extracmstext.split(' '): cmstext += r' $\it{' + f' {part}' + r'}$'
+        cmstext_in_box = False # maybe later add as argument
+        if cmstext_in_box:
+            ax.text(0.02, 0.98, cmstext,
+                    ha='left', va='top', fontsize=fontsize, transform=ax.transAxes)
+            # modify the axis range to accommodate the CMS text
+            if logscale:
+                yscale = ax.get_ylim()[1]/ax.get_ylim()[0]
+                ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1]*yscale**(0.2))
+            else:
+                yscale = ax.get_ylim()[1] - ax.get_ylim()[0]
+                ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1] + yscale*0.2)
+        else:
+            ax.text(0., 1., cmstext,
+                    ha='left', va='bottom', fontsize=fontsize, transform=ax.transAxes)
+    if lumiheader is not None:
+        ax.text(1., 1., lumiheader,
+                ha='right', va='bottom', fontsize=fontsize, transform=ax.transAxes)
+
+
 def plot(sig=None, bkg=None, data=None,
          systematics=None,
          variable=None,
@@ -344,27 +370,7 @@ def plot(sig=None, bkg=None, data=None,
     ax.tick_params(axis='both', which='both', labelsize=15)
     ax.minorticks_on()
     if logscale: ax.set_yscale('log')
-    if docms:
-        cmstext = r'$\bf{ALEPH}$'
-        if extracmstext is not None:
-            for part in extracmstext.split(' '): cmstext += r' $\it{' + f' {part}' + r'}$'
-        cmstext_in_box = False # maybe later add as argument
-        if cmstext_in_box:
-            ax.text(0.02, 0.98, cmstext,
-                    ha='left', va='top', fontsize=20, transform=ax.transAxes)
-            # modify the axis range to accommodate the CMS text
-            if logscale:
-                yscale = ax.get_ylim()[1]/ax.get_ylim()[0]
-                ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1]*yscale**(0.2))
-            else:
-                yscale = ax.get_ylim()[1] - ax.get_ylim()[0]
-                ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1] + yscale*0.2)
-        else:
-            ax.text(0., 1., cmstext,
-                    ha='left', va='bottom', fontsize=20, transform=ax.transAxes)
-    if lumiheader is not None:
-        ax.text(1., 1., lumiheader,
-                ha='right', va='bottom', fontsize=20, transform=ax.transAxes)
+    add_header(ax, docms=docms, extracmstext=extracmstext, lumiheader=lumiheader, logscale=logscale)
     
     # set x-axis title
     xaxtitle = None

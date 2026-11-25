@@ -8,7 +8,9 @@
 #   - jet samples: 'incl' (all jets), 'btag' / 'lighttag' (jets for which the *other* jet
 #     in the event is b-tagged / light-tagged, i.e. hemisphere-opposite tagging);
 #   - particle selections (momentum spectra): 'charged' (all charged constituents),
-#     'prompt' (charged constituents that are not displaced).
+#     'prompt' (charged constituents that are not displaced),
+#     'fromb' (charged constituents from B hadron decays according to the truth flag; simulation only,
+#     written to a separate file since it needs the truth branches, see PARTICLES_BDECAY).
 # For each jet sample, a one-bin counter variable gives the number of jets (for normalization).
 #
 # Naming scheme:
@@ -21,7 +23,8 @@
 #   nrad_<sample>_E<low>-<high>            number of jets with at least one splitting with radiator energy
 #                                          in [low, high), i.e. number of radiators (for normalization)
 #
-# Run as a script to (re)write configs/variables_xi.json, configs/variables_lund.json
+# Run as a script to (re)write configs/variables_xi.json, configs/variables_xi_bdecay.json,
+# configs/variables_lund.json
 # and configs/variables_lund_variations.json.
 
 import os
@@ -36,6 +39,9 @@ JET_SAMPLES = {
 PARTICLES = {
     'charged': '(np.abs(JetsConstituents_charge) > 0)',
     'prompt': '(np.abs(JetsConstituents_charge) > 0) & (~JetsConstituents_isDisplaced)',
+}
+PARTICLES_BDECAY = {
+    'fromb': '(np.abs(JetsConstituents_charge) > 0) & (JetsConstituents_isFromBDecay)',
 }
 # radiator energy bins (GeV) and minimum kt (GeV) for the declustering
 ERAD_BINS = [(5, 10), (10, 15), (15, 20), (20, 30), (30, 50)]
@@ -69,14 +75,14 @@ def counter_variables():
             for sample, mask in JET_SAMPLES.items()]
 
 
-def xi_variables():
+def xi_variables(particles_dict=PARTICLES, counters=True):
     variables = []
     for sample, mask in JET_SAMPLES.items():
-        for particles, pmask in PARTICLES.items():
+        for particles, pmask in particles_dict.items():
             variables.append({'name': f'xi_{sample}_{particles}',
                               'variable': _masked('JetsConstituents_xi', [mask, pmask]),
                               'axtitle': r'$\xi_p = \ln(1/x_p)$', **XI_BINNING})
-    return variables + counter_variables()
+    return variables + (counter_variables() if counters else [])
 
 
 def _erad_mask(low, high):
@@ -119,6 +125,7 @@ def lnkt_variables():
 if __name__ == '__main__':
     configdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'configs')
     for name, variables in [('xi', xi_variables()),
+                            ('xi_bdecay', xi_variables(PARTICLES_BDECAY, counters=False)),
                             ('lund', lund_variables() + radiator_counters() + counter_variables()),
                             ('lund_variations', lund_variables(LUND_CUT_VARIATIONS) + lnkt_variables())]:
         outputfile = os.path.join(configdir, f'variables_{name}.json')

@@ -4,7 +4,9 @@
 # with the same command line arguments (except regions), plus:
 #   --derived: groups of derived variables to compute on the fly (see lib/derived.py),
 #   --settings: json file with settings for the derived variables (see configs/),
-#   --noplots: only make and save the histograms.
+#   --noplots: only make and save the histograms,
+#   --samples: sample list json of the form {"sim": [patterns], "data": [patterns]} (instead of -s/-d),
+#   -r/--runmode: 'local' or 'condor' (submit this exact command as a condor job).
 # The histograms are saved in <outputdir>/hists.pkl (with the settings used),
 # for further processing with plot_results.py.
 
@@ -12,6 +14,7 @@ import os
 import sys
 import json
 import pickle
+import glob
 import argparse
 import matplotlib.pyplot as plt
 
@@ -24,6 +27,7 @@ from tools.variabletools import read_variables
 from tools.samplelisttools import find_files
 from tools.lumitools import get_lumidict, get_sqrtsdict
 from tools.plottools import merge_sampledict
+import tools.condortools as ct
 from analysis.eventselection import load_eventselection, get_variable_names
 from analysis.objectselection import load_objectselection
 from analysis.plot import make_histograms, plot_hists_default
@@ -45,6 +49,18 @@ def find_sampledict(sampledirs, maxfiles=None):
     return sampledict
 
 
+def read_samplelist(path):
+    # sample list json of the form {"sim": [patterns], "data": [patterns]} (as in analysis/configs),
+    # with the patterns (unix-style wildcards) expanded to the individual files
+    with open(path, 'r') as f: samples = json.load(f)
+    res = {}
+    for dtype in ['sim', 'data']:
+        if samples.get(dtype) is None: continue
+        res[dtype] = sorted(set(sum([sorted(glob.glob(p)) for p in samples[dtype]], [])))
+        if len(res[dtype]) == 0: raise Exception(f'No {dtype} files found for patterns {samples[dtype]}')
+    return res
+
+
 def load_json(path, description):
     if path is None: return None
     with open(path, 'r') as f: content = json.load(f)
@@ -56,8 +72,10 @@ def load_json(path, description):
 if __name__=='__main__':
 
     parser = argparse.ArgumentParser(description='Dead cone study: make histograms')
-    parser.add_argument('-s', '--sim', required=True, nargs='+')
+    parser.add_argument('-s', '--sim', default=None, nargs='+')
     parser.add_argument('-d', '--data', default=None, nargs='+')
+    parser.add_argument('--samples', default=None,
+      help='Sample list json with keys "sim" and "data" (alternative to -s and -d)')
     parser.add_argument('-v', '--variables', required=True, nargs='+')
     parser.add_argument('-o', '--outputdir', required=True)
     parser.add_argument('--derived', default=[], nargs='+', choices=list(GROUPS.keys()))
@@ -81,7 +99,29 @@ if __name__=='__main__':
     parser.add_argument('--shapes', default=False, action='store_true')
     parser.add_argument('--dolog', default=False, action='store_true')
     parser.add_argument('--noplots', default=False, action='store_true')
+    parser.add_argument('-r', '--runmode', default='local', choices=['local', 'condor'])
+    parser.add_argument('--condor_cpus', default=2, type=int)
+    parser.add_argument('--condor_mem', default=4000, type=int, help='Memory for condor job (MB)')
     args = parser.parse_args()
+
+    # if requested, submit this exact command (with runmode switched to 'local')
+    # as a condor job instead of running locally
+    if args.runmode == 'condor':
+        env_script = os.path.join(topdir, 'setup.sh')
+        # (the resubmission only recognizes the long form of the runmode flag)
+        argv = ['--runmode' if a == '-r' else a for a in sys.argv]
+        ct.submitScriptAsCondorJob('cjob_deadcone', argv, env_script=env_script,
+          cpus=args.condor_cpus, mem=args.condor_mem)
+        sys.exit()
+
+    # input samples: either a sample list or sample directories
+    if args.samples is not None:
+        if args.sim is not None or args.data is not None:
+            raise Exception('Use either --samples or -s/-d, not both.')
+        samplelist = read_samplelist(args.samples)
+        args.sim = samplelist.get('sim')
+        args.data = samplelist.get('data')
+    if args.sim is None: raise Exception('No simulation samples given (use -s or --samples).')
 
     # read selections
     objectselection = None

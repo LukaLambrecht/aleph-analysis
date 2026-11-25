@@ -56,7 +56,9 @@ Results and their interpretation are in [NOTES.md](NOTES.md).
   - `angle`: angle of each constituent to the jet axis;
   - `xi`: x_p and ξ_p;
   - `tags`: displaced tracks and jet tags;
+  - `bdecay`: constituents from B hadron decays according to the truth flag (setting `bdecay_truth`; simulation only);
   - `lund`: the declustering.
+- `lib/bsubtraction.py`: methods to remove the B decay products from the ξ_p spectra (see below).
 - `lib/lund.py`: vectorized Cambridge/Aachen reclustering and iterative declustering (numpy only).
 - `lib/variables.py`: histogram variable definitions, including the E_rad bins and splitting cuts.
   Run it to regenerate `configs/variables_*.json`.
@@ -106,6 +108,41 @@ python run.py -s $D/mc -d $D/data --maxfiles_sim 2 --maxfiles_data 1 \
   -o output/test --noplots
 python plot_results.py -i output/test/hists.pkl -o output/test/results
 ```
+
+### On lxplus (condor, sample lists)
+
+Instead of `-s`/`-d` directories, `run.py` accepts a sample list `--samples <json>` of the form
+`{"sim": [patterns], "data": [patterns]}`, e.g. `configs/samples_20261125_sync_eos.json`.
+Note that the `mc` directories of recent ntuples also contain `_train.root`/`_test.root` copies of the same events,
+so the patterns must select only `output_qqb_<N>.root` (passing the directory would count events twice).
+With `-r condor`, `run.py` submits itself as a condor job (environment from `setup.sh`).
+
+```bash
+cd studies/deadcone
+source ../../setup.sh
+bash jobs/submit_condor.sh configs/samples_20261125_sync_eos.json sync20261125
+bash jobs/plot_condor.sh sync20261125   # once the job is done: output/sync20261125/results
+```
+
+These scripts run only the baseline ξ_p analysis (reference settings, `variables_xi.json` and `variables_xi_bdecay.json`,
+derived groups `xi tags bdecay`).
+For the declustering and the `nomerge`/`tight` variations, use the commands of `jobs/run_full.sh` with `--samples` and `--runmode condor`.
+
+## Removal of B decay products
+
+The methods are defined in `lib/bsubtraction.py`, and `plot_results.py --bsub <methods>` selects them.
+By default, all methods whose histograms are in the input file are used.
+Each method gives per-jet ξ_p spectra per flavour without the B decay products, in simulation and in tag-corrected data:
+- `ip`: per-track removal of the displaced tracks (impact parameter based; particle selection `prompt`).
+- `mctemplate`: the ξ_p spectrum of the tracks from B decays is taken from simulation per flavour.
+  It uses the truth flag in setting `bdecay_truth`, by default `JetsConstituents_isFromPrimaryB == 1`.
+  This spectrum is subtracted from the spectrum of all charged tracks at distribution level, in simulation and in data.
+  It needs `configs/variables_xi_bdecay.json` and `--derived bdecay`, so only ntuples with the truth branches can be used.
+
+Plots: `xi_<method>.png`, `xi_double_ratio_<method>.png`, and `xi_bsub_comparison.png` for all methods together.
+To add a method, add an entry to `METHODS` in `lib/bsubtraction.py`:
+- a `TrackRemoval` for any per-track selection (e.g. a classifier score), with its particle selection added to `lib/variables.py`;
+- or another distribution-level `TemplateSubtraction`.
 
 ## Classifier scores as jet tags
 

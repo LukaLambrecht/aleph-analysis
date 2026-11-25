@@ -1,0 +1,26 @@
+[
+  {
+    "name": "xi_incl_fromb",
+    "variable": "JetsConstituents_xi[((np.abs(JetsConstituents_charge) > 0) & (JetsConstituents_isFromBDecay))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_btag_fromb",
+    "variable": "JetsConstituents_xi[(Jets_otherBTagged) & ((np.abs(JetsConstituents_charge) > 0) & (JetsConstituents_isFromBDecay))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  },
+  {
+    "name": "xi_lighttag_fromb",
+    "variable": "JetsConstituents_xi[(Jets_otherLightTagged) & ((np.abs(JetsConstituents_charge) > 0) & (JetsConstituents_isFromBDecay))]",
+    "axtitle": "$\\xi_p = \\ln(1/x_p)$",
+    "nbins": 30,
+    "xlow": 0.0,
+    "xhigh": 6.0
+  }
+]

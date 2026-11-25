@@ -1,10 +1,13 @@
 # Flavour comparisons for the dead cone study
 
 # Reads the histograms made by run.py and makes the following plots:
-#   - xi_charged.png, xi_prompt.png: xi_p spectra of uds, c and b jets and their ratios to uds,
-#     for all charged constituents (compared to OPAL, Eur. Phys. J. C7 (1999) 369) and without displaced tracks;
-#   - xi_double_ratio.png: effect of removing the displaced tracks: b / uds with and without them,
-#     the fraction of tracks kept per flavour, and the double ratio of b / uds without and with them;
+#   - xi_charged.png: xi_p spectra of uds, c and b jets and their ratios to uds,
+#     for all charged constituents (compared to OPAL, Eur. Phys. J. C7 (1999) 369);
+#   - for each method <m> to remove the B decay products (see lib/bsubtraction.py and --bsub):
+#     - xi_<m>.png: the same spectra after the removal;
+#     - xi_double_ratio_<m>.png: effect of the removal: b / uds with and without it,
+#       the fraction of tracks kept per flavour, and the double ratio of b / uds without and with it;
+#   - xi_bsub_comparison.png: b / uds and the fraction of tracks kept in b jets for all methods;
 #   - lund_ratios.png: ln(1/theta) distributions of b and uds jets and their ratios R(theta) = b / uds
 #     (and c / uds in simulation), per radiator energy bin, with the dead cone angles m_Q/E,
 #     for one or more input files;
@@ -30,9 +33,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 thisdir = os.path.abspath(os.path.dirname(__file__))
+topdir = os.path.abspath(os.path.join(thisdir, '../../'))
+sys.path.append(topdir)
 sys.path.append(os.path.join(thisdir, 'lib'))
 
+from tools.lumitools import get_lumidict, get_sqrtsdict
+from plotting.plot import add_header
+
 from variables import ERAD_BINS, KTMIN, LUND_CUT_VARIATIONS, LUND_CUT_LABELS
+from bsubtraction import METHODS, NOMINAL
 
 plt.rcdefaults()
 
@@ -41,6 +50,17 @@ TAGGED = {'b': 'btag', 'uds': 'lighttag'}
 MASSES = {'b': 4.8, 'c': 1.5}
 COLORS = {'b': 'darkorchid', 'c': 'slateblue', 'uds': 'darkturquoise'}
 LABELS = {'b': 'b', 'c': 'c', 'uds': 'uds'}
+# arguments for plotting.plot.add_header (ALEPH label and luminosity header), set from the command line
+HEADER = {'extracmstext': 'Archived Data', 'lumiheader': None}
+
+
+def _decorate(ax, note=None, ymargin=1.):
+    ### ALEPH label and luminosity header above the axis, and a note in its upper right corner
+    ### (the upper y-limit is multiplied by ymargin to make room for the note)
+    add_header(ax, fontsize=15, **HEADER)
+    if ymargin != 1.: ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1] * ymargin)
+    if note is not None:
+        ax.text(0.97, 0.95, note, ha='right', va='top', fontsize=12, transform=ax.transAxes)
 
 
 class Spectra(object):
@@ -93,13 +113,13 @@ class Spectra(object):
 
 def _rel(value, error):
     with np.errstate(divide='ignore', invalid='ignore'):
-        return np.where(value > 0, error / value, 0)
+        return np.where(value != 0, error / np.abs(value), 0)
 
 
 def _ratio(num, den):
     with np.errstate(divide='ignore', invalid='ignore'):
         value = num[0] / den[0]
-        return value, value * np.sqrt(_rel(*num)**2 + _rel(*den)**2)
+        return value, np.abs(value) * np.sqrt(_rel(*num)**2 + _rel(*den)**2)
 
 
 def _step(ax, bins, values, errors=None, **kwargs):
@@ -128,20 +148,19 @@ def load_opal(path):
     return bins, res
 
 
-def plot_xi(spectra, particles, outputfile, opal=None):
-    ### xi_p spectra per event (= 2 x per jet) for b and uds, and the ratio b / uds
-    var = '{sample}' + f'_{particles}'
-    var = 'xi_' + var
-    bins = spectra.bins[var.format(sample='incl')]
+def plot_xi(spectra, method, outputfile, opal=None):
+    ### xi_p spectra per event (= 2 x per jet) for b and uds, and the ratio b / uds,
+    ### for a method to remove the B decay products (see lib/bsubtraction.py; NOMINAL for none)
+    bins = spectra.bins['xi_incl_charged']
     fig, axs = plt.subplots(nrows=2, figsize=(7, 7), height_ratios=[2, 1], sharex=True)
     curves = {}
     for flavour in ['uds', 'c', 'b']:
-        value, error = spectra.truth(var, flavour)
+        value, error = method.sim(spectra, flavour)
         curves[('sim', flavour)] = (2*value, 2*error)
         _step(axs[0], bins, 2*value, 2*error, color=COLORS[flavour], label=f'Simulation, {LABELS[flavour]}')
     if spectra.has_data:
         for flavour in ['uds', 'b']:
-            value, error = spectra.corrected_data(var, flavour)
+            value, error = method.data(spectra, flavour)
             curves[('data', flavour)] = (2*value, 2*error)
             _points(axs[0], bins, 2*value, 2*error, color=COLORS[flavour], label=f'Data (tag-corrected), {LABELS[flavour]}')
     if opal is not None:
@@ -151,8 +170,7 @@ def plot_xi(spectra, particles, outputfile, opal=None):
                     label=f'OPAL (hadron level), {LABELS[flavour]}')
     axs[0].set_ylabel(r'$1/N_{ev}\, dN_{ch}/d\xi_p$', fontsize=15)
     axs[0].legend(fontsize=9, loc='upper left')
-    title = 'all charged constituents' if particles == 'charged' else 'charged, displaced tracks removed'
-    axs[0].set_title(f'Momentum spectra ({title})', fontsize=13)
+    _decorate(axs[0], note=method.label, ymargin=1.15)
     # ratios
     for flavour in ['c', 'b']:
         _step(axs[1], bins, *_ratio(curves[('sim', flavour)], curves[('sim', 'uds')]), color=COLORS[flavour],
@@ -175,22 +193,22 @@ def plot_xi(spectra, particles, outputfile, opal=None):
     return curves
 
 
-def plot_xi_double_ratio(spectra, outputfile):
-    ### effect of removing the displaced tracks on the xi_p spectra:
-    ###   top: b / uds for all charged constituents and without displaced tracks;
-    ###   middle: fraction of tracks kept (without displaced / all charged) per flavour;
-    ###   bottom: double ratio (b / uds without displaced) / (b / uds all charged),
+def plot_xi_double_ratio(spectra, method, outputfile):
+    ### effect of removing the B decay products (with a method of lib/bsubtraction.py) on the xi_p spectra:
+    ###   top: b / uds for all charged constituents and after the removal;
+    ###   middle: fraction of tracks kept (after removal / all charged) per flavour;
+    ###   bottom: double ratio (b / uds after removal) / (b / uds all charged),
     ###           i.e. the kept fraction in b relative to uds.
     ### (Uncertainties are propagated as if the two spectra were independent,
     ### which overestimates them since one is a subset of the other.)
     bins = spectra.bins['xi_incl_charged']
-    var = {p: 'xi_{sample}_' + p for p in ['charged', 'prompt']}
-    sim = {(p, f): spectra.truth(var[p], f) for p in var for f in ['uds', 'c', 'b']}
+    methods = {'charged': NOMINAL, 'prompt': method}
+    sim = {(p, f): m.sim(spectra, f) for p, m in methods.items() for f in ['uds', 'c', 'b']}
     data = {}
     if spectra.has_data:
-        data = {(p, f): spectra.corrected_data(var[p], f) for p in var for f in ['uds', 'b']}
+        data = {(p, f): m.data(spectra, f) for p, m in methods.items() for f in ['uds', 'b']}
     fig, axs = plt.subplots(nrows=3, figsize=(7, 9), height_ratios=[1, 1, 1], sharex=True)
-    styles = {'charged': ('-', 'o', 'all charged'), 'prompt': ('--', 's', 'displaced removed')}
+    styles = {'charged': ('-', 'o', 'all charged'), 'prompt': ('--', 's', 'after removal')}
     # b / uds for both particle selections
     for p, (ls, marker, label) in styles.items():
         _step(axs[0], bins, *_ratio(sim[(p, 'b')], sim[(p, 'uds')]), color=COLORS['b'], linestyle=ls,
@@ -208,7 +226,7 @@ def plot_xi_double_ratio(spectra, outputfile):
         _points(axs[1], bins, *_ratio(data[('prompt', f)], data[('charged', f)]), color=COLORS[f],
                 label=f'Data (tag-corrected), {LABELS[f]}')
     axs[1].set_ylabel('Fraction kept', fontsize=15)
-    axs[1].set_ylim(0.4, 1.1)
+    axs[1].set_ylim(0, 1.2)
     # double ratio
     for f in ['c', 'b']:
         num = _ratio(sim[('prompt', f)], sim[('prompt', 'uds')])
@@ -219,12 +237,51 @@ def plot_xi_double_ratio(spectra, outputfile):
         den = _ratio(data[('charged', 'b')], data[('charged', 'uds')])
         _points(axs[2], bins, *_ratio(num, den), color='black', label='Data (tag-corrected), b')
     axs[2].set_ylabel('Double ratio', fontsize=15)
-    axs[2].set_ylim(0.4, 1.1)
+    axs[2].set_ylim(0, 1.2)
     axs[2].set_xlabel(r'$\xi_p = \ln(1/x_p)$', fontsize=15)
     for ax in axs:
         ax.axhline(1, color='grey', linestyle='--')
         ax.legend(fontsize=8, loc='lower right')
-    axs[0].set_title('Effect of removing displaced tracks', fontsize=13)
+    _decorate(axs[0], note=method.label)
+    fig.tight_layout()
+    fig.savefig(outputfile)
+    plt.close(fig)
+    print(f'Saved {outputfile}')
+
+
+def plot_xi_bsub_comparison(spectra, methods, outputfile):
+    ### comparison of the methods to remove the B decay products:
+    ###   top: b / uds in simulation (lines) and data (points) for all charged constituents and each method;
+    ###   bottom: fraction of tracks kept in b jets (after removal / all charged).
+    bins = spectra.bins['xi_incl_charged']
+    allmethods = {'none': NOMINAL, **methods}
+    colors = ['black'] + list(plt.cm.tab10(np.arange(len(methods))))
+    markers = ['o', 's', '^', 'v', 'D', 'P']
+    fig, axs = plt.subplots(nrows=2, figsize=(7, 7), sharex=True)
+    sim_b0 = NOMINAL.sim(spectra, 'b')
+    data_b0 = NOMINAL.data(spectra, 'b') if spectra.has_data else None
+    for idx, ((key, method), color) in enumerate(zip(allmethods.items(), colors)):
+        sim = {f: method.sim(spectra, f) for f in ['uds', 'b']}
+        _step(axs[0], bins, *_ratio(sim['b'], sim['uds']), color=color, label=f'Simulation, {key}')
+        if key != 'none': _step(axs[1], bins, *_ratio(sim['b'], sim_b0), color=color, label=f'Simulation, {key}')
+        if spectra.has_data:
+            data = {f: method.data(spectra, f) for f in ['uds', 'b']}
+            marker = markers[idx % len(markers)]
+            _points(axs[0], bins, *_ratio(data['b'], data['uds']), color=color, marker=marker, mfc='none',
+                    label=f'Data (tag-corrected), {key}')
+            if key != 'none':
+                _points(axs[1], bins, *_ratio(data['b'], data_b0), color=color, marker=marker, mfc='none',
+                        label=f'Data (tag-corrected), {key}')
+    axs[0].set_ylabel('b / uds', fontsize=15)
+    axs[0].set_ylim(0, 2)
+    axs[1].set_ylabel('Fraction kept in b', fontsize=15)
+    axs[1].set_ylim(0, 1.2)
+    axs[1].set_xlabel(r'$\xi_p = \ln(1/x_p)$', fontsize=15)
+    for ax in axs:
+        ax.axhline(1, color='grey', linestyle='--')
+        ax.legend(fontsize=8)
+    axs[0].legend(fontsize=8, loc='upper left')
+    _decorate(axs[0])
     fig.tight_layout()
     fig.savefig(outputfile)
     plt.close(fig)
@@ -357,10 +414,17 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--labels', default=None, nargs='+',
       help='Labels for the input files (default: their directory names)')
     parser.add_argument('-o', '--outputdir', required=True)
+    parser.add_argument('--bsub', default=None, nargs='+', choices=list(METHODS.keys()),
+      help='Methods to remove the B decay products (see lib/bsubtraction.py);'
+          +' default: all methods for which the histograms are available')
+    parser.add_argument('--year', default='1994',
+      help='Year for the luminosity header (luminosity and centre-of-mass energy from tools/lumitools.py)')
     parser.add_argument('--opal', default=os.path.join(thisdir, 'references', 'opal1999_xi.json'))
     args = parser.parse_args()
 
     os.makedirs(args.outputdir, exist_ok=True)
+    HEADER['lumiheader'] = (f'{args.year}, ' + '{:.1f}'.format(get_lumidict()[args.year]) + ' pb$^{-1}$, '
+                            + '{:.1f}'.format(get_sqrtsdict()[args.year]) + ' GeV')
     spectra_list = [Spectra(f) for f in args.inputfiles]
     labels = args.labels or [os.path.basename(os.path.dirname(os.path.abspath(f))) for f in args.inputfiles]
     ref = spectra_list[0]
@@ -370,9 +434,20 @@ if __name__ == '__main__':
     if 'xi_incl_charged' in ref.bins:
         opal = load_opal(args.opal)
         # (OPAL includes heavy-hadron decay products, so it is only compared to the spectra of all charged particles)
-        plot_xi(ref, 'charged', os.path.join(args.outputdir, 'xi_charged.png'), opal=opal)
-        plot_xi(ref, 'prompt', os.path.join(args.outputdir, 'xi_prompt.png'))
-        plot_xi_double_ratio(ref, os.path.join(args.outputdir, 'xi_double_ratio.png'))
+        plot_xi(ref, NOMINAL, os.path.join(args.outputdir, 'xi_charged.png'), opal=opal)
+        # removal of B decay products
+        methods = {k: METHODS[k] for k in (args.bsub or METHODS.keys())}
+        for key, method in list(methods.items()):
+            if method.available(ref): continue
+            msg = f'WARNING: histograms for B decay product removal method {key} not found, skipping it.'
+            if args.bsub is not None: raise Exception(msg.replace('WARNING: ', '').replace(', skipping it', ''))
+            print(msg)
+            methods.pop(key)
+        for key, method in methods.items():
+            plot_xi(ref, method, os.path.join(args.outputdir, f'xi_{key}.png'))
+            plot_xi_double_ratio(ref, method, os.path.join(args.outputdir, f'xi_double_ratio_{key}.png'))
+        if len(methods) > 0:
+            plot_xi_bsub_comparison(ref, methods, os.path.join(args.outputdir, 'xi_bsub_comparison.png'))
 
     # declustering
     if has(ref, 'lund'):
